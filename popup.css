@@ -1,9 +1,6 @@
 body {
 	font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
 	font-size: 100%;
-}
-
-#status {
 	max-height: 200px;
-	min-width: 200px;
+	min-width: 300px;
 }

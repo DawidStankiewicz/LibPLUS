@@ -2,9 +2,13 @@
   "manifest_version": 2,
 
   "name": "Podglad średniej na Librusie",
-  "description": "Ten dodatek pozwala na wyswietlenie średniej ucznia, nawet jeżeli podgląd jest zablokowany przez administratora.",
-  "version": "1.0",
-  "icons": {"32": "icon_32.png"},
+  "description": "Ten dodatek pozwala na wyswietlenie średniej ocen ucznia, nawet jeżeli podgląd jest wyłączony przez administratora.",
+  "author": "Dawid Stankiewicz",
+  "version": "1.1",
+  "short_name": "Średnia",
+  "icons": {"128": "icon_128.png",
+			"48": "icon_48.png",
+			"16": "icon_16.png"},
   
   "browser_action": {
     "default_icon": "icon.png",
@@ -18,7 +22,6 @@
     }
   ],
   "permissions": [
-    "activeTab",
-    "https://ajax.googleapis.com/"
+    "activeTab"
   ]
 }
