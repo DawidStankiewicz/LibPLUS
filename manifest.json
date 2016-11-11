@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+
+  "name": "Podglad średniej na Librusie",
+  "description": "Ten dodatek pozwala na wyswietlenie średniej ucznia, nawet jeżeli podgląd jest zablokowany przez administratora.",
+  "version": "1.0",
+  "icons": {"32": "icon_32.png"},
+  
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://synergia.librus.pl/przegladaj_oceny/uczen"],
+      "js": ["jquery.js", "pagescript.js"],
+	  "run_at": "document_end"
+    }
+  ],
+  "permissions": [
+    "activeTab",
+    "https://ajax.googleapis.com/"
+  ]
+}
