@@ -1,92 +1,156 @@
-window.onload = function init(){
+/*
+ * Author: Dawid Stankiewicz
+ * theszczypiorek[ at ]gmail.com
+ * github.com/Szczypioreg
+ * 
+ * LibPLUS
+ * Version: 1.2 - 02.12.2016 
+ * 
+ */ 
+
+ 
+ 
+/*
+ * Objects 
+ */ 
+function Grade(id, fullVal, val, subject) {
+	this.id = id;
+	this.fullVal = fullVal;
+	this.val = val;
+	this.subject = subject;
+}
+function Subject(id, avg, numberOfGrades) {
+	this.id = id;
+	this.avg = avg;
+	this.numberOfGrades = numberOfGrades;
+}
+
+
+
+/*
+ * Global variables
+ */ 
+grades = [], subjects = [];
+numberOfAllGrades = countGrades();
+// eg. 3.02564865545 to 3.03 
+const displayPrecisionOfFloatNumber = 2;
+
+
+
+window.onload = function main(){
+	createContainersOnPage();
 	calculateAndDisplayTheAverage();
-	calculateAndDisplaySubjectsAverage();
-};
+	setNumberOfGradesOnPage(numberOfAllGrades);
+	
+	createUpdateButton();
+} 
 
 function calculateAndDisplayTheAverage() {
 	/*
-		weightedAvg = denominator / divider = (d1*w1 + d2*w2 + ... + di*wi) / (w1 + w2 + ... + wi) 
-	
+		weightedAvg = sumOfProductsGradesAndWeights / sumOfWeights = 
+					= (d1*w1 + d2*w2 + ... + di*wi) / (w1 + w2 + ... + wi) 
 	*/ 
-	var denominator = 0, divider = 0, weightedAvg, index = 1;
-	while ($("#Ocena" + index).html()!= null) {
-		
-		// get grade with html code
-		dataGrade = $("#Ocena" + index).html();
-		
-		// get only grade value
-		grade = $("#Ocena" + index + "> a").html();
-		
-		if (!isPlusOrMinus(grade)) {
-			if (hasPlusOrMinus(grade)) {
-				grade = convertGradeToNumber(grade);
-			}	
-			// get grade weight
-			gradeWeight = getGradeWeight(dataGrade);
-
-			// Now when we have grade and weight we can count
-			denominator = denominator + (grade*gradeWeight);
-			divider = divider + Number(gradeWeight);
-		}
-		index++;
-	}
-	if (divider > 0) {
-		weightedAvg = denominator / divider;
-	}
-	console.log("Your avg: " + weightedAvg);
-	gradesCounter = index - 1;
-	$(".container-icon > table > tbody > tr > td").last().after("<td><p><b>Średnia: </b>" + weightedAvg.toFixed(3) + "<br /><b>Wszystkich ocen: </b>" + gradesCounter + "</p></td>");
-}
-
-function calculateAndDisplaySubjectsAverage() {
-	var gradeIndex = 1, subjectIndex = 1;
+	let sumOfProductsGradesAndWeights = 0, sumOfWeights = 0;
 	
-	while ($("#Ocena" + gradeIndex).html()!= null) {	
-		// Average of one subject
-		var denominator = 0, divider = 0, avgOfSubject = 0, gradeOfSubject = 0;
+	let weightedAvg=0, gradeId = 1, subjectId = 0;
+	while (isGradeExist(gradeId)) {
+		dataOfGrade = getGradeHTMLData(gradeId);
+		grade = getGradeValue(gradeId);
 		
-		do {
-			// get grade with html code
-			dataGrade = $("#Ocena" + gradeIndex).html();
-			
-			// get only grade value
-			grade = $("#Ocena" + gradeIndex + "> a").html();
-			
-			if (!isPlusOrMinus(grade)) {
-				if (hasPlusOrMinus(grade)) {
-					grade = convertGradeToNumber(grade);
-				}	
-				// get grade weight
-				gradeWeight = getGradeWeight(dataGrade);
-
-				// Now when we have grade and weight we can count
-				denominator = denominator + (grade*gradeWeight);
-				divider = divider + Number(gradeWeight);
-			}
-			gradeIndex++;
-			gradeOfSubject++;
-		} 
-		// check if next grade exist. gradeIndex
-		while(isNextGradeOfSubject(gradeIndex-1));
-		
-		if (divider > 0) {
-			avgOfSubject = denominator / divider;
+		if (!isPlusOrMinus(grade) && grade.indexOf("np") === -1) {
+			if (hasPlusOrMinus(grade)) {
+				grade = convertGradeToNumber(grade); // eg from 4+ convert to 4.5 or 4- convet to 3.75
+			}	
+			gradeWeight = getGradeWeight(dataOfGrade); // get grade weight
+			sumOfProductsGradesAndWeights += (grade*gradeWeight); // now when we have grade and weight we can count
+			sumOfWeights += Number(gradeWeight);
 		}
-		
-		// console.log(subjectIndex + " subject: avg= " + avgOfSubject + " grades=" + gradeOfSubject);
-		$("#Ocena" + (gradeIndex-1)).parent().next().append(" " + avgOfSubject.toFixed(2));
-		subjectIndex++;
+		gradeId++;
+		if (!isNextGradeOfSubject(gradeId-1)) {
+			subjectId++;
+			subject = subjects[subjectId] = new Subject(subjectId);
+			subject.avg = sumOfProductsGradesAndWeights / sumOfWeights;
+			setAvgOfSubjectOnPage(subjectId, subject.avg);
+			
+			sumOfProductsGradesAndWeights = 0;
+			sumOfWeights = 0;
+			weightedAvg += subject.avg;
+		}
+	}
+	weightedAvg /= subjectId;
+	console.log("Your avg: " + weightedAvg);
+	gradesCounter = gradeId - 1;
+	setAvgValueOfUserOnPage(weightedAvg.toFixed(displayPrecisionOfFloatNumber));
+}
+
+function createContainersOnPage() {
+	/* 
+	 * Add container for student avg (#studentAvg) and number of all grades (#numberOfAllGrades).
+	 */
+	$(".container-icon > table > tbody > tr > td").last()
+	.after('<td><p><b>Średnia: </b><span id="studentAvg">!</span><br /><b>Wszystkich ocen: </b><span id="numberOfAllGrades">!</span></p></td>');
+	
+	/*
+	 * Add containers for the avg of subjects (#avgSubject[id])
+	 */
+	let gradeId = 0, subjectId = 0;
+	while (isGradeExist(gradeId)) {
+		gradeId++;
+		if (!isNextGradeOfSubject(gradeId)) {
+			subjectId++;
+			$("#Ocena" + (gradeId)).parent().next().append('<span id="avgSubject'+subjectId+'"> ! </span>');
+		}
 	}
 }
-/*
+
+function updateAll() {
+	grades = [], subjects = [];
+	numberOfAllGrades = countGrades();
+	calculateAndDisplayTheAverage();
+	setNumberOfGradesOnPage(numberOfAllGrades);
+	console.log("updated");
+}
+
+function setAvgOfSubjectOnPage(subjectId, avg) {
+	$("#avgSubject" + subjectId).text(avg.toFixed(displayPrecisionOfFloatNumber));
+}
+
 function createUpdateButton() {
-	$(".inside").after('<div id="updateButton"><span class="fold"><a href="#" class="fold-link"><span class="fold-start">Aktualizuj średnią</span><span class="fold-end"></span></a></span></div>');
+	$(".inside")
+	.after('<div id="updateButton"><span class="fold"><a href="#" class="fold-link"><span class="fold-start">Aktualizuj średnią</span><span class="fold-end"></span></a></span></div>');
 	$( "#updateButton" ).click(function() {
-		calculateAndDisplayTheAverage();
-		calculateAndDisplaySubjectsAverage();
+		updateAll();
 	});
 }
-*/
+
+function setAvgValueOfUserOnPage(avg) {
+	$("#studentAvg").text(avg);	
+}
+
+function setNumberOfGradesOnPage(num) {
+	$("#numberOfAllGrades").text(num);	
+}
+
+/*
+ * get grade with html code and all data
+ */
+function getGradeHTMLData(id) {
+	return $("#Ocena" + id).html();
+}
+
+/*
+ * get only grade value
+ */
+function getGradeValue(id) {
+	return $("#Ocena" + id + "> a").html();
+}
+
+function hasPlusOrMinus(grade) {
+	if (grade.search(/\+/g) != -1 | grade.search("-") != -1 && grade.length > 1) {
+		return true;
+	}
+	return false;
+}
 
 function isPlusOrMinus(grade) {
 	if ((grade.search("-") != -1 | grade.search(/\+/g) != -1) && grade.length == 1) {
@@ -94,8 +158,17 @@ function isPlusOrMinus(grade) {
 	} 
 	return false;
 }
-function hasPlusOrMinus(grade) {
-	if (grade.search(/\+/g) != -1 | grade.search("-") != -1 && grade.length > 1) {
+
+// check if grade exist
+function isGradeExist(id) {
+	if ($("#Ocena" + id).html()== null) {
+		return false;
+	}
+	return true;
+}
+
+function isNextGradeOfSubject(gradeIndex) {
+	if (typeof $("#Ocena" + gradeIndex).next().html() !== "undefined") {
 		return true;
 	}
 	return false;
@@ -116,17 +189,28 @@ function convertGradeToNumber(grade) {
 	return grade;
 }
 
-// get weight of grade from HTML
+/* 
+ * Get weight of grade from HTML (grade data).
+ */
 function getGradeWeight(dataGrade){
-	gradeWeight = dataGrade.substring(dataGrade.indexOf("Waga:") + 6, dataGrade.indexOf("Waga:") + 8);
-	if (gradeWeight.substring(1,2) != 0) {
-		gradeWeight = gradeWeight.substring(0,1);
+	let gradeWeight = 0;
+	// check if weight exist
+	if (dataGrade.indexOf("Waga:")!==-1) {
+		gradeWeight = dataGrade.substring(dataGrade.indexOf("Waga:") + 6, dataGrade.indexOf("Waga:") + 8);
+		// check if grade has '<' and remove if has 
+		if (gradeWeight.substring(1,2) != 0) {
+			console.log(gradeWeight);
+			gradeWeight = gradeWeight.substring(0,1);
+		}
 	}
 	return gradeWeight;
 }
-function isNextGradeOfSubject(gradeIndex) {
-	if (typeof $("#Ocena" + gradeIndex).next().html() !== "undefined") {
-		return true;
+
+function countGrades(id) {
+	let counter = 0, gradeId = 0;
+	while (isGradeExist(gradeId)) {
+		counter++;
+		gradeId++;
 	}
-	return false;
+	return counter;
 }

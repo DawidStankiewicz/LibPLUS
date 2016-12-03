@@ -1,30 +1,34 @@
 <!doctype html>
-<!--
- This page is shown when the extension button is clicked, because the
- "browser_action" field in manifest.json contains the "default_popup" key with
- value "popup.html".
- -->
 <html>
   <head>
-    <title>Getting Started Extension's Popup</title>
+    <title>LibPLUS 1.2</title>
     <link href="popup.css" type="text/css" rel="stylesheet"/>
-
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
-     -->
     <script src="popup.js"></script>
-	<script src=""></script>
   </head>
-  <body onload="print()">
-    <div id="status">WejdŸ
-	<a href="https://synergia.librus.pl/przegladaj_oceny/uczen" target="_blank">na dziennik elektroniczny</a> 
-	aby zobaczyæ œredni¹.</div>
-	
-	<p>Kod Ÿród³owy: <a href="https://github.com/Szczypioreg/Podglad-sredniej-Librus" target="_blank">Github</a></p>
-	<p>Autor: <a href="https://github.com/Szczypioreg" target="_blank">Dawid Stankiewicz</a></p>
+  <body>
+	<div class="col">
+		<div class="row">
+			<h4 id="title">Witaj w LibPLUS!</h4>
+		</div>
+		<div class="row">
+			<div class="button">
+				<a href="https://goo.gl/b6nbSZ" target="_blank">podgl¹d œredniej</a> 
+			</div>
+		</div>
+		<div class="row">
+			<div class="button">
+				<a href="https://goo.gl/6dPjfz" target="_blank">kod Ÿród³owy</a> 
+			</div>
+		</div>
+		<div class="row">
+			<div class="button">
+				<a href="https://goo.gl/F9IpFa" target="_blank">autor</a> 
+			</div>
+		</div>
+		<div class="footer">
+			<span>1.2 Dawid Stankiewicz</span>
+		</div>
+	</div>
   </body>
 </html>
 
