@@ -52,7 +52,7 @@ function calculateAndDisplayTheAverage() {
 	*/ 
 	let sumOfProductsGradesAndWeights = 0, sumOfWeights = 0;
 	
-	let weightedAvg=0, gradeId = 1, subjectId = 0;
+	let weightedAvg=0, gradeId = 1, subjectId = 0, numberOfSubjectsWithAvg = 0;
 	while (isGradeExist(gradeId)) {
 		dataOfGrade = getGradeHTMLData(gradeId);
 		grade = getGradeValue(gradeId);
@@ -69,15 +69,19 @@ function calculateAndDisplayTheAverage() {
 		if (!isNextGradeOfSubject(gradeId-1)) {
 			subjectId++;
 			subject = subjects[subjectId] = new Subject(subjectId);
-			subject.avg = sumOfProductsGradesAndWeights / sumOfWeights;
-			setAvgOfSubjectOnPage(subjectId, subject.avg);
-			
-			sumOfProductsGradesAndWeights = 0;
-			sumOfWeights = 0;
-			weightedAvg += subject.avg;
+			if (!isNaN(sumOfProductsGradesAndWeights / sumOfWeights)) {
+				numberOfSubjectsWithAvg++;
+				subject.avg = sumOfProductsGradesAndWeights / sumOfWeights;
+				setAvgOfSubjectOnPage(subjectId, subject.avg.toFixed(displayPrecisionOfFloatNumber));
+				sumOfProductsGradesAndWeights = 0;
+				sumOfWeights = 0;
+				weightedAvg += subject.avg;
+			} else {
+				setAvgOfSubjectOnPage(subjectId, "");
+			}			
 		}
 	}
-	weightedAvg /= subjectId;
+	weightedAvg /= numberOfSubjectsWithAvg;
 	console.log("Your avg: " + weightedAvg);
 	gradesCounter = gradeId - 1;
 	setAvgValueOfUserOnPage(weightedAvg.toFixed(displayPrecisionOfFloatNumber));
@@ -112,12 +116,12 @@ function updateAll() {
 }
 
 function setAvgOfSubjectOnPage(subjectId, avg) {
-	$("#avgSubject" + subjectId).text(avg.toFixed(displayPrecisionOfFloatNumber));
+	$("#avgSubject" + subjectId).text(avg);
 }
 
 function createUpdateButton() {
 	$(".inside")
-	.after('<div id="updateButton"><span class="fold"><a href="#" class="fold-link"><span class="fold-start">Aktualizuj średnią</span><span class="fold-end"></span></a></span></div>');
+	.after('<div id="updateButton"><span class="fold"><a href="#" class="fold-link"><span class="fold-start">Update</span><span class="fold-end"></span></a></span></div>');
 	$( "#updateButton" ).click(function() {
 		updateAll();
 	});
