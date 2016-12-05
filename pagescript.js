@@ -57,7 +57,7 @@ function calculateAndDisplayTheAverage() {
 		dataOfGrade = getGradeHTMLData(gradeId);
 		grade = getGradeValue(gradeId);
 		
-		if (!isPlusOrMinus(grade) && grade.indexOf("np") === -1) {
+		if (isNumberWithPlusOrMinus(grade)) {
 			if (hasPlusOrMinus(grade)) {
 				grade = convertGradeToNumber(grade); // eg from 4+ convert to 4.5 or 4- convet to 3.75
 			}	
@@ -152,11 +152,12 @@ function hasPlusOrMinus(grade) {
 	return false;
 }
 
-function isPlusOrMinus(grade) {
-	if ((grade.search("-") != -1 | grade.search(/\+/g) != -1) && grade.length == 1) {
-		return true;
-	} 
-	return false;
+function isNumberWithPlusOrMinus(grade) {
+	if (hasPlusOrMinus(grade)) {
+		grade = grade.replace(/\+/g,'');
+		grade = grade.replace('-','');
+	}
+	return !isNaN(grade);
 }
 
 // check if grade exist
@@ -199,7 +200,6 @@ function getGradeWeight(dataGrade){
 		gradeWeight = dataGrade.substring(dataGrade.indexOf("Waga:") + 6, dataGrade.indexOf("Waga:") + 8);
 		// check if grade has '<' and remove if has 
 		if (gradeWeight.substring(1,2) != 0) {
-			console.log(gradeWeight);
 			gradeWeight = gradeWeight.substring(0,1);
 		}
 	}
