@@ -14,7 +14,20 @@ Gotowe.
 - podgląd średniej ważonej z każdego przedmiotu
 - licznik ocen ucznia
 
+
 ## Zmiany:
+
+### v2.0
+
+
+### v1.6 
+- poprawa błędu "NaN" w przypadku braku ocen z przedmiotu (tylko plusy, minusy lub 'np')
+
+### v1.5 
+- naprawiony błąd z kodowaniem znaków
+
+### v1.3
+- naprawiony błąd "NaN" 
 
 ### v1.2
 - naprawiony błąd z "np" 
@@ -25,3 +38,4 @@ Gotowe.
 - podgląd średniej ważonej ze wszystkich ocen
 - podgląd średniej ważonej wybranych przedmiotów
 - licznik ocen
+
