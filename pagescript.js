@@ -65,7 +65,7 @@ const
     /**
      * eg. 3.02564865545 to 3.03
      */
-    DISPLAY_PRECISION_FLOAT_NUMBER = 3,
+    DISPLAY_PRECISION_FLOAT_NUMBER = 2,
 
     DEBUG_GRADES = false,
     DEBUG_AVG_CALCULATE = false;
@@ -88,8 +88,6 @@ function main() {
         createContainersOnPage();
         let grades = findAllGrades();
         let subjects = getAllSubjects(grades);
-
-        console.log("subjects: " + subjects.length + ": \n" + subjects.toString());
 
 
         setAvgValueOfUserOnPage(roundDecimalPlaces(calculateAvg(grades)));
@@ -186,15 +184,17 @@ function calculateAndDisplayTheAverage() {
      = (d1*w1 + d2*w2 + ... + di*wi) / (w1 + w2 + ... + wi)
      */
     let sumOfProductsGradesAndWeights = 0, sumOfWeights = 0;
-
+	
+	let a = 0, b = 0;
+	
     let weightedAvg = 0, gradeId = 1, subjectId = 0, numberOfSubjectsWithAvg = 0, counter = 0;
     while (isGradeExist(gradeId)) {
 
-
+		
         dataOfGrade = getGradeRawData(gradeId);
         grade = getGradeRawValue(gradeId);
 
-        if (isNumberWithPlusOrMinus(grade)) {
+        if (isNumberWithPlusOrMinus(grade) && !isPlusOrMinus(grade)) {
             if (hasPlusOrMinus(grade)) {
                 grade = getConvertedNumberFromRawGradeValue(grade); // eg from 4+ convert to 4.5 or 4- convet to 3.75
             }
@@ -202,13 +202,17 @@ function calculateAndDisplayTheAverage() {
             sumOfProductsGradesAndWeights += (grade * gradeWeight); // now when we have grade and weight we can count
             sumOfWeights += Number(gradeWeight);
             counter++;
-
+			
+			a += grade * gradeWeight;
+			b += gradeWeight;
+			
             console.log('id: ' + gradeId);
             console.log('grade rawval: ' + getGradeRawValue(gradeId));
             console.log('grade val: ' + grade);
             console.log('weight: ' + gradeWeight);
             console.log('counter:  ' + counter);
-            console.log('avg: ' + sumOfProductsGradesAndWeights / sumOfWeights);
+			if (b!= 0)
+            console.log('avg: ' + a/b);
             console.log('\n\n\n');
         }
         gradeId++;
@@ -457,28 +461,48 @@ function updateAll() {
 
 function addUpdateButtonToPage() {
     $(".inside")
-        .after('<div id="updateButton"><span class="fold"><a href="#" class="fold-link"><span class="fold-start">Update</span><span class="fold-end"></span></a></span></div>');
+        .after('<div id="updateButton"><span class="fold"><a href="#" class="fold-link"><span class="fold-start">Aktualizuj</span><span class="fold-end"></span></a></span></div>');
     $("#updateButton").click(function () {
         updateAll();
     });
 }
 
 /**
+ * Export user's data thanks to ExcelPlus 
+ * 
  * http://aymkdn.github.io/ExcelPlus/
  */
 
 function exportDataToExcel() {
     let excelPlus = new ExcelPlus();
-
     excelPlus
-        .createFile("LibPlus")
-        .write({"content":[ ["ID","RAW VAl"] ]})
-        .saveAs("libplus.xlsx");
-    console.log("file generated");
+        .createFile("Oceny")
+        .write({"content":[ ['ID','PRZEDMIOT','NAUCZYCIEL','DATA','KATEGORIA','TYP','DODANE PRZEZ','RAW','OCENA','WAGA'] ]});
+	
+	let line = 2;
+	findAllGrades().forEach(function (grade) {
+		let weight = Number(grade.weight);
+		
+		excelPlus
+			.write({ 'cell' : 'A'+line, 'content' : grade.id })
+			.write({ 'cell' : 'B'+line, 'content' : grade.subject })
+			.write({ 'cell' : 'C'+line, 'content' : grade.teacher })
+			.write({ 'cell' : 'D'+line, 'content' : grade.date })
+			.write({ 'cell' : 'E'+line, 'content' : grade.category })
+			.write({ 'cell' : 'F'+line, 'content' : grade.type })
+			.write({ 'cell' : 'G'+line, 'content' : grade.addedBy })
+			.write({ 'cell' : 'H'+line, 'content' : grade.rawVal })
+			.write({ "cell" : "I"+line, "content":grade.val === 0 ? 0 + "" : Number(grade.val) })
+			.write({ "cell" : "J"+line, "content": "" + Number(weight)});
+		line++;
+	});
+	let fileName = 'LibPLUS_user_data_' + new Date().getTime() + '.xlsx';
+    excelPlus.saveAs(fileName);
+    console.log('Generated file: ' + fileName);
 }
 function addExportToExcelButtonToPage() {
     $(".inside")
-        .after('<div id="exportButton"><span class="fold"><a href="#" class="fold-link"><span class="fold-start">Export</span><span class="fold-end"></span></a></span></div>');
+        .after('<div id="exportButton"><span class="fold"><a href="#" class="fold-link"><span class="fold-start">Eksportuj</span><span class="fold-end"></span></a></span></div>');
     $("#exportButton").click(function () {
         exportDataToExcel();
     });
