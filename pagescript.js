@@ -7,9 +7,25 @@
  *
  */
 
+window.onload = function onload() {
+    main();
+}
 
 /**
- Grade object
+ * GRADE OBJECT
+ *
+ * @param id
+ * @param type
+ * @param rawData
+ * @param rawVal
+ * @param val
+ * @param subject
+ * @param category
+ * @param date
+ * @param weight
+ * @param teacher
+ * @param addedBy
+ * @constructor
  */
 function Grade(id, type, rawData, rawVal, val, subject, category, date, weight, teacher, addedBy) {
     this.id = id;
@@ -24,89 +40,174 @@ function Grade(id, type, rawData, rawVal, val, subject, category, date, weight, 
     this.teacher = teacher;
     this.addedBy = addedBy;
 }
+
 /**
- Subject object
+ * SUBJECT OBJECT
+ *
+ * @param id
+ * @param name
+ * @param avg
+ * @param numberOfGrades
+ * @constructor
  */
-function Subject(id, avg, numberOfGrades) {
+function Subject(id, name, avg, numberOfGrades) {
     this.id = id;
+    this.name = name;
     this.avg = avg;
     this.numberOfGrades = numberOfGrades;
 }
 
 /**
- Grade types:
+ * USER OBJECT
+ *
+ * @param name
+ * @param grades
+ * @param subjects
+ * @constructor
  */
-const
-    GRADE_NORMAL = 'NORMAL',
-    GRADE_MINUS = 'MINUS',
-    GRADE_PLUS = 'PLUS',
-    GRADE_PROPOSED_FIRST = 'PROPOSED_FIRST',
-    GRADE_PROPOSED_SECOND = 'PROPOSED_SECOND',
-    GRADE_END_FIRST = 'END_FISRT',
-    GRADE_END_SECOND = 'END_SECOND',
-    GRADE_UNPREPARED = "UNPREPARED",
+function User(name, grades, subjects) {
+    this.name = name;
+    this.grades = grades;
+    this.subjects = subjects;
+}
+let user = new User();
 
-    TITLE_ATTRIBUTE = 'title',
-    GRADE_ID = "#Ocena",
+/**
+ *
+ * @returns {User}
+ */
+function getUserWithData() {
+    let user = new User();
+    user.name = findUserName();
+    user.grades = findAllGrades();
+    user.subjects = getAllSubjects(user.grades);
+    return user;
+}
 
-    /**
-     * Constant categories of grades
-     */
-    CATEGORY_PROPOSED_FISRT = 'przewidywana śródroczna',
-    CATEGORY_END_FISRT = 'śródroczna',
-    CATEGORY_PROPOSED_SECOND = 'przewidywana roczna',
-    CATEGORY_END_SECOND = 'przewidywana roczna',
-
-    STUDENT_AVG_CONTAINER_ID = 'studentAvgContainer',
-    STUDENT_AVG_CONTAINER = '<td><p><b>Średnia: </b><span id="' + STUDENT_AVG_CONTAINER_ID + '">!</span>',
-
-    STUDENT_GRADE_COUNTER_CONTAINER_ID = 'allGradeCounter',
-    STUDENT_GRADE_COUNTER_CONTAINER = '<b>Wszystkich ocen: </b><span id=' + STUDENT_GRADE_COUNTER_CONTAINER_ID + '>!</span></p></td>',
-    /**
-     * eg. 3.02564865545 to 3.03
-     */
-    DISPLAY_PRECISION_FLOAT_NUMBER = 2,
-
-    DEBUG_GRADES = false,
-    DEBUG_AVG_CALCULATE = false;
+/**
+ *
+ * @returns {XML|jQuery}
+ */
+function findUserName() {
+    return $('b:contains("Uczeń:")').parent().text().replace('Uczeń: ', '').replace('Klasa:', '');
+}
 
 
 /**
- Global variables
-
+ * MAIN FUNCTION
  */
-numberOfAllGrades = countGrades();
-
-
-window.onload = function onload() {
-    main();
-}
-
-
 function main() {
     if (isAllGradeMode()) {
-        createContainersOnPage();
-        let grades = findAllGrades();
-        let subjects = getAllSubjects(grades);
+        user = getUserWithData();
+        createContainers();
 
+        calculateAndDisplayAvg();
 
-        setAvgValueOfUserOnPage(roundDecimalPlaces(calculateAvg(grades)));
-
-        setNumberOfGradesOnPage(numberOfAllGrades);
-
-        addUpdateButtonToPage();
-
-        addExportToExcelButtonToPage();
+        setNumberOfGradesOnPage(countGrades());
+        createButtons();
     }
 }
 
+/**
+ * CONTAINERS FOR DATA ON PAGE
+ */
+function createContainers() {
+    createLibPLUSContainer();
+    $('#' + LIBPLUS_ID).append(STUDENT_AVG_CONTAINER);
+    $('#' + LIBPLUS_ID).append(STUDENT_AVG_END_FIRST_CONTAINER);
+    $('#' + LIBPLUS_ID).append(STUDENT_GRADE_COUNTER_CONTAINER);
+
+    createContainersOfSubjects();
+    createFormForUserAvgOfDateRage();
+    createContainerForUserAvgOfDateRage();
+}
+function createLibPLUSContainer() {
+    $(".container-icon").after('<div id=' + LIBPLUS_ID + ' class="container"></div>')
+}
+function createContainersOfSubjects() {
+    user.subjects.forEach(function (subject) {
+        /**
+         * https://api.jquery.com/nth-child-selector/
+         */
+        $("#przedmioty_" + subject.id).prev().children("td:nth-child(4)").after().html(" ");
+        $("#przedmioty_" + subject.id).prev().children("td:nth-child(4)").after().append('<span title="Średnia wyświetlona dzięki rozszerzeniu LibPLUS." id="avgSubject_' + subject.id + '"></span>');
+    });
+}
+function createContainerForUserAvgOfDateRage() {
+    $('#' + LIBPLUS_ID).append(STUDENT_AVG_DATE_RAGE_CONTAINER);
+}
+
+/**
+ * DISPLAY DATA ON PAGE
+ */
+
+function setAvgValueOfUserOnPage(avg) {
+    $('#' + STUDENT_AVG_CONTAINER_ID).text(avg);
+}
+
+function setNumberOfGradesOnPage(num) {
+    $('#' + STUDENT_GRADE_COUNTER_CONTAINER_ID).text(num);
+}
+
+function setAvgValueOfSubjectOnPage(subjects) {
+    subjects.forEach(function (subject) {
+        $('#avgSubject_' + subject.id).text(roundDecimalPlaces(subject.avg));
+    });
+}
+
+function setAvgValueOfEndFirstPeriodOnPage(avg) {
+    $('#' + STUDENT_AVG_END_FIRST_CONTAINER_ID).text(avg);
+}
 
 
+function setAvgValueOfDateRangeOnPage(avg) {
+    $('#' + STUDENT_AVG_DATE_RAGE_CONTAINER_ID).text(roundDecimalPlaces(avg));
+}
 
+function displayGradesAndAvg(grades) {
+    hideAllGrades();
+    grades.forEach(function (grade) {
+        showGradeOnPage(grade.id);
+        if (grade.weight != 0) {
+            showSubjectAvgContainer(getGradeSubject(grade.id));
+        }
+    });
+}
 
-function calculateAvg(gradeList) {
-    let grades = gradeList,
-        avg = 0.0,
+function hideAllGrades() {
+    user.grades.forEach(function (grade) {
+        hideGradeOnPage(grade.id);
+        hideSubjectAvgContainer(getGradeSubject(grade.id));
+    })
+}
+
+function hideGradeOnPage(i) {
+    $(GRADE_ID + i).hide();
+}
+
+function showGradeOnPage(i) {
+    $(GRADE_ID + i).show();
+}
+
+function hideSubjectAvgContainer(subject) {
+    $("#avgSubject_" + subject.id).hide();
+}
+
+function showSubjectAvgContainer(subject) {
+    $("#avgSubject_" + subject.id).show();
+}
+
+/**
+ * AVG FUNCTIONS
+ */
+
+function calculateAndDisplayAvg() {
+    setAvgValueOfUserOnPage(roundDecimalPlaces(getCalculatedAvg(user.grades)));
+    setAvgValueOfSubjectOnPage(user.subjects);
+    setAvgValueOfEndFirstPeriodOnPage(roundDecimalPlaces(getCalculatedAvg(getGradesEndOfFirstPeriod(user.grades))));
+}
+function getCalculatedAvg(grades) {
+    let avg = 0.0,
         counter = 0.0,
         valSum = 0.0,
         weightSum = 0.0;
@@ -135,7 +236,48 @@ function calculateAvg(gradeList) {
     return avg;
 }
 
+function getAvgOfSubject(subjectName, grades) {
+    let gradesOfSubject = new Array(),
+        counter = 0;
+    grades.forEach(function (grade) {
+        if (grade.subject.localeCompare(subjectName) === 0) {
+            gradesOfSubject[counter] = grade;
+            counter++;
+        }
+    });
+    return getCalculatedAvg(gradesOfSubject);
+}
 
+/**
+ * GRADES END OF FIRST PERIOD
+ *
+ * @param grades
+ * @returns {Array}
+ */
+
+function getGradesEndOfFirstPeriod(grades) {
+    let gradesEndOfFirstPeriod = new Array();
+    let i = 0;
+
+    grades.forEach(function (grade) {
+        if (GRADE_END_FIRST === grade.type) {
+            let gradeEndOfFirstPeriod = jQuery.extend({}, grade); // copy object
+            gradeEndOfFirstPeriod.weight = 1;
+            gradesEndOfFirstPeriod[i] = gradeEndOfFirstPeriod;
+            i++;
+        }
+    });
+    return gradesEndOfFirstPeriod;
+}
+
+/**
+ * GRADES
+ */
+
+/**
+ * FIND ALL GRADES FUNCTION
+ * @returns {Array}
+ */
 function findAllGrades() {
     let gradeId = 1,
         grades = [];
@@ -156,7 +298,6 @@ function findAllGrades() {
 
         grades[gradeId - 1] = grade;
 
-
         if (DEBUG_GRADES) {
             console.debug("id: " + grades[gradeId - 1].id);
             console.debug("type: " + grades[gradeId - 1].type);
@@ -172,90 +313,17 @@ function findAllGrades() {
             console.debug("added by: " + grades[gradeId - 1].addedBy);
             console.debug('\n\n');
         }
+
         gradeId++;
     }
     return grades;
 }
 
-
-function calculateAndDisplayTheAverage() {
-    /**
-     weightedAvg = sumOfProductsGradesAndWeights / sumOfWeights =
-     = (d1*w1 + d2*w2 + ... + di*wi) / (w1 + w2 + ... + wi)
-     */
-    let sumOfProductsGradesAndWeights = 0, sumOfWeights = 0;
-	
-	let a = 0, b = 0;
-	
-    let weightedAvg = 0, gradeId = 1, subjectId = 0, numberOfSubjectsWithAvg = 0, counter = 0;
-    while (isGradeExist(gradeId)) {
-
-		
-        dataOfGrade = getGradeRawData(gradeId);
-        grade = getGradeRawValue(gradeId);
-
-        if (isNumberWithPlusOrMinus(grade) && !isPlusOrMinus(grade)) {
-            if (hasPlusOrMinus(grade)) {
-                grade = getConvertedNumberFromRawGradeValue(grade); // eg from 4+ convert to 4.5 or 4- convet to 3.75
-            }
-            gradeWeight = getGradeWeightFromRawData(dataOfGrade); // get grade weight
-            sumOfProductsGradesAndWeights += (grade * gradeWeight); // now when we have grade and weight we can count
-            sumOfWeights += Number(gradeWeight);
-            counter++;
-			
-			a += grade * gradeWeight;
-			b += gradeWeight;
-			
-            console.log('id: ' + gradeId);
-            console.log('grade rawval: ' + getGradeRawValue(gradeId));
-            console.log('grade val: ' + grade);
-            console.log('weight: ' + gradeWeight);
-            console.log('counter:  ' + counter);
-			if (b!= 0)
-            console.log('avg: ' + a/b);
-            console.log('\n\n\n');
-        }
-        gradeId++;
-        if (!isNextGradeOfSubject(gradeId - 1)) {
-            subjectId++;
-            subject = subjects[subjectId] = new Subject(subjectId);
-            if (!isNaN(sumOfProductsGradesAndWeights / sumOfWeights)) {
-                numberOfSubjectsWithAvg++;
-                subject.avg = sumOfProductsGradesAndWeights / sumOfWeights;
-                setAvgOfSubjectOnPage(subjectId, subject.avg.toFixed(DISPLAY_PRECISION_FLOAT_NUMBER + 2));
-                sumOfProductsGradesAndWeights = 0;
-                sumOfWeights = 0;
-                weightedAvg += subject.avg;
-            } else {
-                setAvgOfSubjectOnPage(subjectId, "");
-            }
-        }
-    }
-    weightedAvg /= numberOfSubjectsWithAvg;
-    console.log("Your avg: " + weightedAvg);
-    gradesCounter = gradeId - 1;
-    setAvgValueOfUserOnPage(weightedAvg.toFixed(DISPLAY_PRECISION_FLOAT_NUMBER));
-}
-
-
-function createContainersOnPage() {
-    /**
-     * Add container for student avg and number of all grades.
-     */
-    $(".container-icon > table > tbody > tr > td").last()
-        .after('<td>' + STUDENT_AVG_CONTAINER + '<br />' + STUDENT_GRADE_COUNTER_CONTAINER + '</td>');
-    /**
-     * Add containers for the avg of subjects (#avgSubject[id])
-     */
-    let gradeId = 0, subjectId = 0;
-    while (isGradeExist(gradeId)) {
-        gradeId++;
-        if (!isNextGradeOfSubject(gradeId)) {
-            subjectId++;
-            $(GRADE_ID + (gradeId)).parent().next().append('<span id="avgSubject' + subjectId + '"></span>');
-        }
-    }
-}
+/**
+ * GRADE COUNTER
+ *
+ * @returns {number}
+ */
 function countGrades() {
     let counter = 0, gradeId = 1;
     let isNext = true;
@@ -268,18 +336,21 @@ function countGrades() {
     return counter;
 }
 
-function roundDecimalPlaces(number) {
-    return number.toFixed(DISPLAY_PRECISION_FLOAT_NUMBER);
+function isGradeExist(id) {
+    return ($(GRADE_ID + id).html() != null);
 }
 
 
+/**
+ * GRADE DATA
+ */
 function getGradeRawData(id) {
     return $(GRADE_ID + id).children('a').attr(TITLE_ATTRIBUTE).replace(/<br>/g, ";").replace(/: /g, ":").replace(/<br\/>/g, ";");
 }
+
 function getGradeRawValue(id) {
     return $(GRADE_ID + id).children('a').html();
 }
-
 
 function getGradeType(id) {
     let gradeType = GRADE_NORMAL;
@@ -301,6 +372,9 @@ function getGradeType(id) {
     else if (isMinus(getGradeRawValue(id))) {
         gradeType = GRADE_MINUS;
     }
+    else if (isGradeUnprepared(id)) {
+        gradeType = GRADE_UNPREPARED;
+    }
     return gradeType;
 }
 
@@ -311,6 +385,7 @@ function getGradeValueFromRawValue(rawVal) {
     }
     return gradeValue;
 }
+
 function getGradeSubject(id) {
     let subject = null;
     if (isGradeProposedFromFirstPeriod(id)) {
@@ -327,15 +402,19 @@ function getGradeSubject(id) {
     }
     return subject;
 }
+
 function getGradeCategoryFromRawData(rawData) {
     return rawData.substr(rawData.indexOf("Kategoria:") + 10, 100).split(";")[0];
 }
+
 function getGradeDateFromRawData(rawData) {
     return rawData.substr(rawData.indexOf("Data:") + 5, 10).split(";")[0];
 }
+
 function getGradeTeacherFromRawData(rawData) {
     return rawData.substr(rawData.indexOf("Nauczyciel:") + 11, 50).split(";")[0];
 }
+
 function getGradeAddedByFromRawData(rawData) {
     return rawData.substr(rawData.indexOf("Dodał:") + 6, 50).split(";")[0];
 }
@@ -362,39 +441,14 @@ function getGradeWeightFromRawData(rawData) {
     }
     return 0;
 }
+
 function getGradeWeightSubstring(rawData) {
     return rawData.substr(rawData.indexOf("Waga:") + 5, 4).split(";")[0];
-}
-function getAllSubjects(grades) {
-    var subjects = new Array();
-    let counter = 0;
-    grades.forEach(function (grade) {
-        if (grade.subject.localeCompare(subjects[counter - 1]) !== 0) {
-            subjects[counter] = grade.subject;
-            counter++;
-        }
-    });
-    return subjects;
-}
-
-
-
-
-
-function isAllGradeMode() {
-    return ($('#zmiany_logowanie_wszystkie').length == 0);
-}
-function isGradeExist(id) {
-    return ($(GRADE_ID + id).html() != null);
 }
 
 function isWeightExist(rawData) {
     return (rawData.indexOf("Waga:") !== -1);
 }
-function isNextGradeOfSubject(gradeIndex) {
-    return (typeof $(GRADE_ID + gradeIndex).next().html() !== "undefined");
-}
-
 
 function isNumberWithPlusOrMinus(grade) {
     if (hasPlusOrMinus(grade)) {
@@ -403,63 +457,147 @@ function isNumberWithPlusOrMinus(grade) {
     }
     return !isNaN(grade);
 }
+
 function isPlusOrMinus(rawVal) {
     return (hasPlusOrMinus(rawVal) && rawVal.length == 1);
 }
+
 function isPlus(grade) {
     return (grade.search(/\+/g) != -1 && grade.length == 1);
 }
+
 function isMinus(grade) {
     return (grade.search("-") != -1 && grade.length == 1);
 }
+
 function hasPlusOrMinus(grade) {
     return (grade.search(/\+/g) != -1 || grade.search("-") != -1);
 }
 
-
 function isGradeProposedFromFirstPeriod(id) {
     return ($(GRADE_ID + id).children('a').attr(TITLE_ATTRIBUTE).indexOf(CATEGORY_PROPOSED_FISRT) !== -1);
 }
+
 function isGradeProposedFromSecondPeriod(id) {
     return ($(GRADE_ID + id).children('a').attr(TITLE_ATTRIBUTE).indexOf(CATEGORY_PROPOSED_SECOND) !== -1);
 }
+
 function isGradeEndFirst(id) {
     return ($(GRADE_ID + id).children('a').attr(TITLE_ATTRIBUTE).indexOf(CATEGORY_END_FISRT) !== -1);
 }
+
 function isGradeEndSecond(id) {
     return ($(GRADE_ID + id).children('a').attr(TITLE_ATTRIBUTE).indexOf(CATEGORY_END_SECOND) !== -1);
 }
 
-
-
-
-
-function setAvgOfSubjectOnPage(subjectId, avg) {
-    $("#avgSubject" + subjectId).text(avg);
-}
-
-function setAvgValueOfUserOnPage(avg) {
-    $('#' + STUDENT_AVG_CONTAINER_ID).text(avg);
-}
-
-function setNumberOfGradesOnPage(num) {
-    $('#' + STUDENT_GRADE_COUNTER_CONTAINER_ID).text(num);
+function isGradeUnprepared(id) {
+    return ($(GRADE_ID + id).children('a').html().indexOf('np') !== -1);
 }
 
 
 
 
+/**
+ * SUBJECTS
+ */
 
-function updateAll() {
-    grades = [], subjects = [];
-    numberOfAllGrades = countGrades();
-    calculateAndDisplayTheAverage();
-    setNumberOfGradesOnPage(numberOfAllGrades);
-    console.log("updated");
+/**
+ *
+ * @param grades
+ * @returns {Array}
+ */
+function getAllSubjects(grades) {
+    let subjects = new Array(), counter = 0;
+    grades.forEach(function (grade) {
+        if (counter == 0 || subjects[counter - 1].name.localeCompare(grade.subject) !== 0) {
+            let subject = new Subject();
+            subject.id = getIdOfSubjectOfGrade(grade.id);
+            subject.name = grade.subject;
+            subject.avg = getAvgOfSubject(subject.name, grades);
+
+            subjects[counter] = subject;
+            counter++;
+        }
+    });
+    return subjects;
+}
+
+/**
+ *
+ * @param id
+ * @returns {id}
+ */
+function getIdOfSubjectOfGrade(id) {
+    return $(GRADE_ID + id).parent().parent().next().attr('id').split("_")[1];
 }
 
 
-function addUpdateButtonToPage() {
+
+
+/**
+ * DATA FROM SELECTED RANGE
+ */
+
+/**
+ *
+ * @param date
+ * @param dateRangeStart
+ * @param dateRangeEnd
+ * @returns {Array}
+ */
+
+function getGradesByDateRange(dateStart, dateEnd) {
+    let gradesByDateRange = new Array(), i = 0;
+    user.grades.forEach(function (grade) {
+        if (isDateInSelectedRange(grade.date, dateStart, dateEnd)) {
+            gradesByDateRange[i] = grade;
+            i++;
+        }
+    });
+    return gradesByDateRange;
+}
+
+function showDataFromSelectedRange() {
+    let dateStart = $("#dateRageStart").val();
+    let dateEnd = $("#dateRageEnd").val();
+
+    let gradesFromDateRange = getGradesByDateRange(dateStart, dateEnd);
+    displayGradesAndAvg(gradesFromDateRange);
+    let avg = getCalculatedAvg(gradesFromDateRange);
+    setAvgValueOfDateRangeOnPage(avg);
+    let subjects = getAllSubjects(gradesFromDateRange);
+    setAvgValueOfSubjectOnPage(subjects);
+}
+
+function createFormForUserAvgOfDateRage() {
+    $('#' + LIBPLUS_ID).append(STUDENT_AVG_DATE_RAGE_FROM);
+    let today = getDate(), schoolYearStartDate = getSchoolYearStartDate();
+    $("#dateRageStart").val(schoolYearStartDate);
+    $("#dateRageEnd").val(today);
+
+    $("#showDataFromRange").click(function () {
+        showDataFromSelectedRange();
+    });
+}
+
+function isDateInSelectedRange(date, dateRangeStart, dateRangeEnd) {
+    return ((date.localeCompare(dateRangeStart) === 0 || date.localeCompare(dateRangeStart) === 1) && (date.localeCompare(dateRangeEnd) === -1 || date.localeCompare(dateRangeEnd) === 0));
+}
+
+
+/**
+ * BUTTONS
+ */
+
+function createButtons() {
+    addUpdateButtonOnPage();
+    addExportToExcelButtonOnPage();
+}
+
+/**
+ * UPDATE BUTTON
+ */
+function addUpdateButtonOnPage() {
     $(".inside")
         .after('<div id="updateButton"><span class="fold"><a href="#" class="fold-link"><span class="fold-start">Aktualizuj</span><span class="fold-end"></span></a></span></div>');
     $("#updateButton").click(function () {
@@ -467,45 +605,82 @@ function addUpdateButtonToPage() {
     });
 }
 
+function updateAll() {
+    user = getUserWithData();
+    calculateAndDisplayAvg();
+    console.log("updated");
+}
+
 /**
- * Export user's data thanks to ExcelPlus 
- * 
+ * Export user's data thanks to ExcelPlus
+ *
  * http://aymkdn.github.io/ExcelPlus/
  */
-
-function exportDataToExcel() {
-    let excelPlus = new ExcelPlus();
-    excelPlus
-        .createFile("Oceny")
-        .write({"content":[ ['ID','PRZEDMIOT','NAUCZYCIEL','DATA','KATEGORIA','TYP','DODANE PRZEZ','RAW','OCENA','WAGA'] ]});
-	
-	let line = 2;
-	findAllGrades().forEach(function (grade) {
-		let weight = Number(grade.weight);
-		
-		excelPlus
-			.write({ 'cell' : 'A'+line, 'content' : grade.id })
-			.write({ 'cell' : 'B'+line, 'content' : grade.subject })
-			.write({ 'cell' : 'C'+line, 'content' : grade.teacher })
-			.write({ 'cell' : 'D'+line, 'content' : grade.date })
-			.write({ 'cell' : 'E'+line, 'content' : grade.category })
-			.write({ 'cell' : 'F'+line, 'content' : grade.type })
-			.write({ 'cell' : 'G'+line, 'content' : grade.addedBy })
-			.write({ 'cell' : 'H'+line, 'content' : grade.rawVal })
-			.write({ "cell" : "I"+line, "content":grade.val === 0 ? 0 + "" : Number(grade.val) })
-			.write({ "cell" : "J"+line, "content": "" + Number(weight)});
-		line++;
-	});
-	let fileName = 'LibPLUS_user_data_' + new Date().getTime() + '.xlsx';
-    excelPlus.saveAs(fileName);
-    console.log('Generated file: ' + fileName);
-}
-function addExportToExcelButtonToPage() {
+function addExportToExcelButtonOnPage() {
     $(".inside")
-        .after('<div id="exportButton"><span class="fold"><a href="#" class="fold-link"><span class="fold-start">Eksportuj</span><span class="fold-end"></span></a></span></div>');
+        .after('<div id="exportButton" title="Eksportuj oceny do Excela dzięki rozszerzeniu LibPLUS!"><span class="fold"><a href="#" class="fold-link"><span class="fold-start">Eksportuj</span><span class="fold-end"></span></a></span></div>');
     $("#exportButton").click(function () {
         exportDataToExcel();
     });
 }
 
+function exportDataToExcel() {
+    let excelPlus = new ExcelPlus();
+    excelPlus
+        .createFile("Oceny")
+        .write({"content": [['ID', 'PRZEDMIOT', 'NAUCZYCIEL', 'DATA', 'KATEGORIA', 'TYP', 'DODANE PRZEZ', 'RAW', 'OCENA', 'WAGA']]});
+    let line = 2;
+    user.grades.forEach(function (grade) {
+        let weight = Number(grade.weight);
+        excelPlus
+            .write({'cell': 'A' + line, 'content': grade.id})
+            .write({'cell': 'B' + line, 'content': grade.subject})
+            .write({'cell': 'C' + line, 'content': grade.teacher})
+            .write({'cell': 'D' + line, 'content': grade.date})
+            .write({'cell': 'E' + line, 'content': grade.category})
+            .write({'cell': 'F' + line, 'content': grade.type})
+            .write({'cell': 'G' + line, 'content': grade.addedBy})
+            .write({'cell': 'H' + line, 'content': grade.rawVal})
+            .write({"cell": "I" + line, "content": grade.val === 0 ? 0 + "" : Number(grade.val)})
+            .write({"cell": "J" + line, "content": "" + Number(weight)});
+        line++;
+    });
+    let fileName = user.name + 'LibPLUS-' + new Date().getTime() + '.xlsx';
+    fileName = fileName.replace(/\u00a0| /g, "_");
+    excelPlus.saveAs(fileName);
+    console.log('Generated file: ' + fileName);
+}
 
+
+/**
+ * OTHER FUNCTIONS
+ */
+
+/**
+ *
+ * @param number
+ * @returns {*}
+ */
+function roundDecimalPlaces(number) {
+    return number.toFixed(DISPLAY_PRECISION_FLOAT_NUMBER);
+}
+
+function isAllGradeMode() {
+    return ($('#zmiany_logowanie_wszystkie').length == 0);
+}
+
+function getDate(date) {
+    if (date === undefined) date = new Date();
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+    let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+    return year + '-' + month + '-' + day;
+}
+
+function getSchoolYearStartDate() {
+    let today = new Date();
+    if ((today.getMonth() + 1) < 9) {
+        return getDate(new Date((today.getFullYear() - 1) + '-09-01'));
+    }
+    return getDate(new Date(today.getFullYear() + '-09-01'));
+}

@@ -19,6 +19,9 @@ body {
 	padding-bottom: 10px;
 }
 a {
+	text-decoration: none;
+}
+.button > a {
 	color: #fff;
 	text-transform: uppercase;
 	text-decoration: none;

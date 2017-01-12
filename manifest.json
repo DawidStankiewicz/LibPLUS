@@ -4,7 +4,7 @@
   "name": "LibPLUS - podgląd średniej na Librusie",
   "description": "Podgląd średniej został wyłączony? To rozszerzenie rozwiąże problem!",
   "author": "Dawid Stankiewicz",
-  "version": "1.7",
+  "version": "2.0.0",
   "short_name": "LibPLUS",
   "icons": {"128": "icon/icon_128.png",
 			"48": "icon/icon_48.png",
@@ -16,7 +16,8 @@
   "content_scripts": [
     {
       "matches": ["https://synergia.librus.pl/przegladaj_oceny/uczen"],
-      "js": ["jquery.js", "pagescript.js", "js-xlsx-master/dist/xlsx.core.min.js", "excelplus/ExcelPlus-2.4.1.min.js", "excelplus/sheetjs.all.min.js"],
+      "js": ["pagescript.min.js", "consts.min.js", "jquery.js", "js-xlsx-master/dist/xlsx.core.min.js", "excelplus/excelPlus-2.4.1.min.js", "excelplus/sheetjs.all.min.js"],
+      "css": ["css/libplusstyle.css"],
 	  "run_at": "document_end"
     }
   ],
