@@ -3,7 +3,7 @@
  * Version: 2.0 - 05.01.2017
  * Author: Dawid Stankiewicz
  * theszczypiorek[ at ]gmail.com
- * github.com/Szczypioreg
+ * github.com/DawidStankiewicz
  *
  */
 
