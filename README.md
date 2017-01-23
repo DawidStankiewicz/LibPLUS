@@ -31,7 +31,7 @@ Funkcja może nie działać w pełni prawidłowo. Proszę zgłaszać błędy.
 
 ## Zgłaszanie błędów
  Wszelkie błędy można zgłaszać:
- - [przez GitHuba](https://github.com/Szczypioreg/LibPLUS/issues)
+ - [przez GitHuba](https://github.com/DawidStankiewicz/LibPLUS/issues)
  - [w sklepie Google Store](https://chrome.google.com/webstore/detail/libplus-podgl%C4%85d-%C5%9Bredniej/logdgpobdggdjliepjjfmnggmbpohmka/support?hl=pl&gl=PL)
 
 ## Zmiany:
