@@ -1,6 +1,5 @@
 /**
  * LibPLUS
- * Version: 2.0 - 05.01.2017
  * Author: Dawid Stankiewicz
  * theszczypiorek[ at ]gmail.com
  * github.com/DawidStankiewicz
@@ -8,26 +7,13 @@
  */
 
 window.onload = function onload() {
-    main();
+    init();
 }
 
 /**
  * GRADE OBJECT
- *
- * @param id
- * @param type
- * @param rawData
- * @param rawVal
- * @param val
- * @param subject
- * @param category
- * @param date
- * @param weight
- * @param teacher
- * @param addedBy
- * @constructor
  */
-function Grade(id, type, rawData, rawVal, val, subject, category, date, weight, teacher, addedBy) {
+function Grade() {
     this.id = id;
     this.type = type;
     this.rawData = rawData;
@@ -43,29 +29,18 @@ function Grade(id, type, rawData, rawVal, val, subject, category, date, weight, 
 
 /**
  * SUBJECT OBJECT
- *
- * @param id
- * @param name
- * @param avg
- * @param numberOfGrades
- * @constructor
  */
-function Subject(id, name, avg, numberOfGrades) {
+function Subject() {
     this.id = id;
     this.name = name;
     this.avg = avg;
-    this.numberOfGrades = numberOfGrades;
 }
 
 /**
  * USER OBJECT
  *
- * @param name
- * @param grades
- * @param subjects
- * @constructor
  */
-function User(name, grades, subjects) {
+function User() {
     this.name = name;
     this.grades = grades;
     this.subjects = subjects;
@@ -84,19 +59,15 @@ function getUserWithData() {
     return user;
 }
 
-/**
- *
- * @returns {XML|jQuery}
- */
 function findUserName() {
     return $('b:contains("Uczeń:")').parent().text().replace('Uczeń: ', '').replace('Klasa:', '');
 }
 
 
 /**
- * MAIN FUNCTION
+ * init FUNCTION
  */
-function main() {
+function init() {
     if (isAllGradeMode()) {
         user = getUserWithData();
         createContainers();
@@ -279,8 +250,8 @@ function getGradesEndOfFirstPeriod(grades) {
  * @returns {Array}
  */
 function findAllGrades() {
-    let gradeId = 1,
-        grades = [];
+    let gradeId = 1;
+    let grades = [];
     while (isGradeExist(gradeId)) {
         let grade = new Grade();
 
@@ -495,8 +466,6 @@ function isGradeUnprepared(id) {
 }
 
 
-
-
 /**
  * SUBJECTS
  */
@@ -507,7 +476,9 @@ function isGradeUnprepared(id) {
  * @returns {Array}
  */
 function getAllSubjects(grades) {
-    let subjects = new Array(), counter = 0;
+    let subjects = new Array();
+    let counter = 0;
+
     grades.forEach(function (grade) {
         if (counter == 0 || subjects[counter - 1].name.localeCompare(grade.subject) !== 0) {
             let subject = new Subject();
@@ -532,8 +503,6 @@ function getIdOfSubjectOfGrade(id) {
 }
 
 
-
-
 /**
  * DATA FROM SELECTED RANGE
  */
@@ -547,7 +516,8 @@ function getIdOfSubjectOfGrade(id) {
  */
 
 function getGradesByDateRange(dateStart, dateEnd) {
-    let gradesByDateRange = new Array(), i = 0;
+    let gradesByDateRange = new Array();
+    let i = 0;
     user.grades.forEach(function (grade) {
         if (isDateInSelectedRange(grade.date, dateStart, dateEnd)) {
             gradesByDateRange[i] = grade;
@@ -562,10 +532,11 @@ function showDataFromSelectedRange() {
     let dateEnd = $("#dateRageEnd").val();
 
     let gradesFromDateRange = getGradesByDateRange(dateStart, dateEnd);
-    displayGradesAndAvg(gradesFromDateRange);
     let avg = getCalculatedAvg(gradesFromDateRange);
-    setAvgValueOfDateRangeOnPage(avg);
     let subjects = getAllSubjects(gradesFromDateRange);
+
+    displayGradesAndAvg(gradesFromDateRange);
+    setAvgValueOfDateRangeOnPage(avg);
     setAvgValueOfSubjectOnPage(subjects);
 }
 
