@@ -8,32 +8,33 @@
 
 window.onload = function onload() {
     init();
-}
+};
 
 /**
  * GRADE OBJECT
  */
 function Grade() {
-    this.id = id;
-    this.type = type;
-    this.rawData = rawData;
-    this.rawVal = rawVal;
-    this.val = val;
-    this.subject = subject;
-    this.category = category;
-    this.date = date;
-    this.weight = weight;
-    this.teacher = teacher;
-    this.addedBy = addedBy;
+    this.id;
+    this.type;
+    this.rawData;
+    this.rawVal;
+    this.val;
+    this.subject;
+    this.category;
+    this.date;
+    this.weight;
+    this.teacher;
+    this.addedBy;
+    this.semester;
 }
 
 /**
  * SUBJECT OBJECT
  */
 function Subject() {
-    this.id = id;
-    this.name = name;
-    this.avg = avg;
+    this.id;
+    this.name;
+    this.avg;
 }
 
 /**
@@ -41,9 +42,9 @@ function Subject() {
  *
  */
 function User() {
-    this.name = name;
-    this.grades = grades;
-    this.subjects = subjects;
+    this.name;
+    this.grades;
+    this.subjects;
 }
 let user = new User();
 
@@ -208,7 +209,7 @@ function getCalculatedAvg(grades) {
 }
 
 function getAvgOfSubject(subjectName, grades) {
-    let gradesOfSubject = new Array(),
+    let gradesOfSubject = [],
         counter = 0;
     grades.forEach(function (grade) {
         if (grade.subject.localeCompare(subjectName) === 0) {
@@ -227,7 +228,7 @@ function getAvgOfSubject(subjectName, grades) {
  */
 
 function getGradesEndOfFirstPeriod(grades) {
-    let gradesEndOfFirstPeriod = new Array();
+    let gradesEndOfFirstPeriod = [];
     let i = 0;
 
     grades.forEach(function (grade) {
@@ -244,6 +245,7 @@ function getGradesEndOfFirstPeriod(grades) {
 /**
  * GRADES
  */
+
 
 /**
  * FIND ALL GRADES FUNCTION
@@ -358,19 +360,7 @@ function getGradeValueFromRawValue(rawVal) {
 }
 
 function getGradeSubject(id) {
-    let subject = null;
-    if (isGradeProposedFromFirstPeriod(id)) {
-        subject = $(GRADE_ID + id).parent().prevAll().eq(2).html();
-    } else if (isGradeEndFirst(id)) {
-        subject = $(GRADE_ID + id).parent().prevAll().eq(3).html();
-    } else if (isGradeProposedFromSecondPeriod(id)) {
-        subject = $(GRADE_ID + id).parent().prevAll().eq(2).html();
-    } else if (isGradeEndSecond(id)) {
-        subject = $(GRADE_ID + id).parent().prevAll().eq(3).html();
-    }
-    else {
-        subject = $(GRADE_ID + id).parent().prev().html();
-    }
+    let subject = $(GRADE_ID + id).parent().parent().children("td:eq(1)").html();
     return subject;
 }
 
@@ -476,7 +466,7 @@ function isGradeUnprepared(id) {
  * @returns {Array}
  */
 function getAllSubjects(grades) {
-    let subjects = new Array();
+    let subjects = [];
     let counter = 0;
 
     grades.forEach(function (grade) {
@@ -516,7 +506,7 @@ function getIdOfSubjectOfGrade(id) {
  */
 
 function getGradesByDateRange(dateStart, dateEnd) {
-    let gradesByDateRange = new Array();
+    let gradesByDateRange = [];
     let i = 0;
     user.grades.forEach(function (grade) {
         if (isDateInSelectedRange(grade.date, dateStart, dateEnd)) {
