@@ -35,6 +35,8 @@ function Subject() {
     this.id;
     this.name;
     this.avg;
+    this.firstSemesterAvg;
+    this.secondSemesterAvg;
 }
 
 /**
@@ -101,8 +103,20 @@ function createContainersOfSubjects() {
         /**
          * https://api.jquery.com/nth-child-selector/
          */
-        $("#przedmioty_" + subject.id).prev().children("td:nth-child(4)").after().html(" ");
-        $("#przedmioty_" + subject.id).prev().children("td:nth-child(4)").after().append('<span title="Średnia wyświetlona dzięki rozszerzeniu LibPLUS." id="avgSubject_' + subject.id + '"></span>');
+
+        let firstSemesterAvgColumn = 4;
+        let secondSemesterAvgColumn = 8;
+        let endAvgColumn = 10;
+
+        // First semester avg container
+        $("#przedmioty_" + subject.id).prev().children("td:nth-child(" + firstSemesterAvgColumn + ")").after().html(" ");
+        $("#przedmioty_" + subject.id).prev().children("td:nth-child(" + firstSemesterAvgColumn + ")").after().append('<span title="Średnia wyświetlona dzięki rozszerzeniu LibPLUS." id="' + FIRST_SEMESTER_AVG_OF_SUBJECT_CONTAINER_ID + subject.id + '"></span>');
+        // Second semester avg container
+        $("#przedmioty_" + subject.id).prev().children("td:nth-child(" + secondSemesterAvgColumn + ")").after().html(" ");
+        $("#przedmioty_" + subject.id).prev().children("td:nth-child(" + secondSemesterAvgColumn + ")").after().append('<span title="Średnia wyświetlona dzięki rozszerzeniu LibPLUS." id="' + SECOND_SEMESTER_AVG_OF_SUBJECT_CONTAINER_ID + subject.id + '"></span>');
+        // End avg of subject container
+        $("#przedmioty_" + subject.id).prev().children("td:nth-child(" + endAvgColumn + ")").after().html(" ");
+        $("#przedmioty_" + subject.id).prev().children("td:nth-child(" + endAvgColumn + ")").after().append('<span title="Średnia wyświetlona dzięki rozszerzeniu LibPLUS." id="' + AVG_OF_SUBJECT_CONTAINER_ID + subject.id + '"></span>');
     });
 }
 function createContainerForUserAvgOfDateRage() {
@@ -123,7 +137,25 @@ function setNumberOfGradesOnPage(num) {
 
 function setAvgValueOfSubjectOnPage(subjects) {
     subjects.forEach(function (subject) {
-        $('#avgSubject_' + subject.id).text(roundDecimalPlaces(subject.avg));
+        $('#' + AVG_OF_SUBJECT_CONTAINER_ID + subject.id).text(roundDecimalPlaces(subject.avg));
+    });
+}
+function setFirstSemesterAvgValueOfSubjectOnPage(subjects) {
+    subjects.forEach(function (subject) {
+        if (isNaN(subject.firstSemesterAvg)) {
+            $('#' + SECOND_SEMESTER_AVG_OF_SUBJECT_CONTAINER_ID + subject.id).text('-');
+        } else {
+            $('#' + FIRST_SEMESTER_AVG_OF_SUBJECT_CONTAINER_ID + subject.id).text(roundDecimalPlaces(subject.firstSemesterAvg));
+        }
+    });
+}
+function setSecondSemesterAvgValueOfSubjectOnPage(subjects) {
+    subjects.forEach(function (subject) {
+        if (isNaN(subject.secondSemesterAvg)) {
+            $('#' + SECOND_SEMESTER_AVG_OF_SUBJECT_CONTAINER_ID + subject.id).text('-');
+        } else {
+            $('#' + SECOND_SEMESTER_AVG_OF_SUBJECT_CONTAINER_ID + subject.id).text(roundDecimalPlaces(subject.secondSemesterAvg));
+        }
     });
 }
 
@@ -175,6 +207,8 @@ function showSubjectAvgContainer(subject) {
 
 function calculateAndDisplayAvg() {
     setAvgValueOfUserOnPage(roundDecimalPlaces(getCalculatedAvg(user.grades)));
+    setFirstSemesterAvgValueOfSubjectOnPage(user.subjects);
+    setSecondSemesterAvgValueOfSubjectOnPage(user.subjects);
     setAvgValueOfSubjectOnPage(user.subjects);
     setAvgValueOfEndFirstPeriodOnPage(roundDecimalPlaces(getCalculatedAvg(getGradesEndOfFirstPeriod(user.grades))));
 }
@@ -197,6 +231,7 @@ function getCalculatedAvg(grades) {
                 console.log('type : ' + grade.type);
                 console.log('grade val: ' + val);
                 console.log('subject: ' + grade.subject);
+                console.log('semester:  ' + grade.semester);
                 console.log('weight: ' + weight);
                 console.log('counter:  ' + counter);
                 console.log('avg: ' + valSum / weightSum);
@@ -213,6 +248,19 @@ function getAvgOfSubject(subjectName, grades) {
         counter = 0;
     grades.forEach(function (grade) {
         if (grade.subject.localeCompare(subjectName) === 0) {
+            gradesOfSubject[counter] = grade;
+            counter++;
+        }
+    });
+    return getCalculatedAvg(gradesOfSubject);
+}
+
+function getAvgOfSubjectOfSemester(subjectName, semester, grades) {
+    let gradesOfSubject = [],
+        counter = 0;
+    grades.forEach(function (grade) {
+        if (grade.subject.localeCompare(subjectName) === 0 && grade.semester === semester) {
+
             gradesOfSubject[counter] = grade;
             counter++;
         }
@@ -268,6 +316,7 @@ function findAllGrades() {
         grade.weight = getGradeWeightFromRawData(grade.rawData);
         grade.teacher = getGradeTeacherFromRawData(grade.rawData);
         grade.addedBy = getGradeAddedByFromRawData(grade.rawData);
+        grade.semester = getGradeSemester(grade.id);
 
         grades[gradeId - 1] = grade;
 
@@ -282,8 +331,8 @@ function findAllGrades() {
             console.debug("date: " + grades[gradeId - 1].date);
             console.debug("weight: " + grades[gradeId - 1].weight);
             console.debug("teacher: " + grades[gradeId - 1].teacher);
-
             console.debug("added by: " + grades[gradeId - 1].addedBy);
+            console.debug("semester: " + grades[gradeId - 1].semester);
             console.debug('\n\n');
         }
 
@@ -324,6 +373,14 @@ function getGradeRawData(id) {
 function getGradeRawValue(id) {
     return $(GRADE_ID + id).children('a').html();
 }
+
+function getGradeSemester(id) {
+    if ($(GRADE_ID + id).parent().parent().children("td:eq(6)").html().indexOf("Ocena" + id) !== -1) {
+        return 2;
+    }
+    return 1;
+}
+
 
 function getGradeType(id) {
     let gradeType = GRADE_NORMAL;
@@ -475,6 +532,8 @@ function getAllSubjects(grades) {
             subject.id = getIdOfSubjectOfGrade(grade.id);
             subject.name = grade.subject;
             subject.avg = getAvgOfSubject(subject.name, grades);
+            subject.firstSemesterAvg = getAvgOfSubjectOfSemester(subject.name, 1, grades);
+            subject.secondSemesterAvg = getAvgOfSubjectOfSemester(subject.name, 2, grades);
 
             subjects[counter] = subject;
             counter++;

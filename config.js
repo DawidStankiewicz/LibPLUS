@@ -54,6 +54,13 @@ var STUDENT_GRADE_COUNTER_CONTAINER_ID = 'allGradeCounter';
 var STUDENT_GRADE_COUNTER_CONTAINER = '<div class="' + LIBPLUS_CONTAINER_ID + '"><p><b>Wszystkich ocen: </b><span id=' + STUDENT_GRADE_COUNTER_CONTAINER_ID + '>-</span></p></div>';
 
 /**
+ *
+ */
+
+var AVG_OF_SUBJECT_CONTAINER_ID = "avg_of_subject_";
+var FIRST_SEMESTER_AVG_OF_SUBJECT_CONTAINER_ID = "first_semester_avg_subject_";
+var SECOND_SEMESTER_AVG_OF_SUBJECT_CONTAINER_ID = "second_semester_avg_subject_";
+/**
  * Date rage section on page
  */
 var STUDENT_AVG_DATE_RAGE_CONTAINER_ID = 'avgDateRage';
