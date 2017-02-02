@@ -1,9 +1,9 @@
 # LibPLUS
 Rozszerzenie do przeglądarki Google Chrome pozwalające wyświetlić średnią ucznia w systemie Librus, nawet jeżeli podgląd został wyłączony przez administrację.
 
-## Obecne funkcje (v2.0)
+## Obecne funkcje (v2.1)
 - podgląd średniej ważonej ucznia
-- podgląd średniej ważonej z każdego przedmiotu
+- podgląd średniej ważonej z każdego przedmiotu (I semestr, II semestr, całoroczna) 
 - podgląd średniej z ocen śródrocznych
 - licznik ocen ucznia
 - eksport ocen do Excela
@@ -55,7 +55,7 @@ Funkcja może nie działać w pełni prawidłowo. Proszę zgłaszać błędy.
 ### v1.6 
 - poprawa błędu "NaN" w przypadku braku ocen z przedmiotu (tylko plusy, minusy lub 'np')
 
-### v2.0
+### v2.0 (12.01.17)
 - nowe funkcje
 - eksport ocen do Excela
 - wyświetlanie średniej z ocen śródrocznych (I semestr)
@@ -64,3 +64,8 @@ Funkcja może nie działać w pełni prawidłowo. Proszę zgłaszać błędy.
 - prawidłowe zliczanie wszystkich ocen ucznia
 - adres do zgłaszania błęów w menu pop-up
 - uruchamianie tylko w trybie wszystkich ocen
+
+### v2.1 (02.02.17)
+- wsparcie drugiego semestru
+- średnia przedmiotu z drugiego semestru
+- średnia przedmiotu całoroczna
