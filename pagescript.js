@@ -72,14 +72,18 @@ function findUserName() {
  */
 function init() {
     if (isAllGradeMode()) {
-        user = getUserWithData();
-        createContainers();
-
-        calculateAndDisplayAvg();
-
-        setNumberOfGradesOnPage(countGrades());
-        createButtons();
+        console.log('Jesteś w trybie "wszystkie oceny"');
+    } else {
+        console.log('Jesteś w trybie "oceny od ostatniego logowania". Przejdź do trybu "wszystkie oceny" aby LibPLUS działał prawidłowo!');
     }
+
+    user = getUserWithData();
+    createContainers();
+    calculateAndDisplayAvg();
+
+    setNumberOfGradesOnPage(countGrades());
+
+    createButtons();
 }
 
 /**
@@ -686,7 +690,7 @@ function roundDecimalPlaces(number) {
 }
 
 function isAllGradeMode() {
-    return ($('#zmiany_logowanie_wszystkie').length == 0);
+    return ($('#zmiany_logowanie_wszystkie').length === 0);
 }
 
 function getDate(date) {
