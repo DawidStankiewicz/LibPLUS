@@ -69,3 +69,11 @@ Funkcja może nie działać w pełni prawidłowo. Proszę zgłaszać błędy.
 - wsparcie drugiego semestru
 - średnia przedmiotu z drugiego semestru
 - średnia przedmiotu całoroczna
+
+### v2.1.1 (06.02.2017)
+- włączenie dla trybu "od ostatniego logowania"
+- rozwiązanie problemu z uruchomieniem rozszerzenia[?] (rozszerzenie mogło się nie uruchamiać z powodu błędnego wykrywania trybu "od ostatniego logowania")
+
+### v2.1.2 (20.03.2017)
+- poprawiony błąd powodujący problemy z wyświetlaniem średniej w drugim półroczu
+- zmiana określania semestru dla oceny - semestr jest teraz definiowany w głównej pętli tworzącej listę wszystkich ocen (findAllGrades)
