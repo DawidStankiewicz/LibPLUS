@@ -306,8 +306,12 @@ function getGradesEndOfFirstPeriod(grades) {
 function findAllGrades() {
     let gradeId = 1;
     let grades = [];
+    let semester = 1;
+    let prevSubject;
+
     while (isGradeExist(gradeId)) {
         let grade = new Grade();
+
 
         grade.id = gradeId;
         grade.type = getGradeType(grade.id);
@@ -320,7 +324,18 @@ function findAllGrades() {
         grade.weight = getGradeWeightFromRawData(grade.rawData);
         grade.teacher = getGradeTeacherFromRawData(grade.rawData);
         grade.addedBy = getGradeAddedByFromRawData(grade.rawData);
-        grade.semester = getGradeSemester(grade.id);
+
+
+        if (prevSubject === undefined || prevSubject !== grade.subject) {
+            prevSubject = grade.subject;
+            semester = 1;
+        }
+
+        grade.semester = semester;
+
+        if (grade.category === CATEGORY_END_FISRT) {
+            semester = 2;
+        }
 
         grades[gradeId - 1] = grade;
 
@@ -377,14 +392,6 @@ function getGradeRawData(id) {
 function getGradeRawValue(id) {
     return $(GRADE_ID + id).children('a').html();
 }
-
-function getGradeSemester(id) {
-    if ($(GRADE_ID + id).parent().parent().children("td:eq(6)").html().indexOf("Ocena" + id) !== -1) {
-        return 2;
-    }
-    return 1;
-}
-
 
 function getGradeType(id) {
     let gradeType = GRADE_NORMAL;
