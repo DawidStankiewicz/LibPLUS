@@ -251,7 +251,7 @@ function getAvgOfSubject(subjectName, grades) {
     let gradesOfSubject = [],
         counter = 0;
     grades.forEach(function (grade) {
-        if (grade.subject.localeCompare(subjectName) === 0) {
+        if (subjectName.localeCompare(grade.subject) === 0) {
             gradesOfSubject[counter] = grade;
             counter++;
         }
@@ -263,7 +263,7 @@ function getAvgOfSubjectOfSemester(subjectName, semester, grades) {
     let gradesOfSubject = [],
         counter = 0;
     grades.forEach(function (grade) {
-        if (grade.subject.localeCompare(subjectName) === 0 && grade.semester === semester) {
+        if (subjectName.localeCompare(grade.subject) === 0 && grade.semester === semester) {
 
             gradesOfSubject[counter] = grade;
             counter++;
@@ -429,6 +429,9 @@ function getGradeValueFromRawValue(rawVal) {
 
 function getGradeSubject(id) {
     let subject = $(GRADE_ID + id).parent().parent().children("td:eq(1)").html();
+	if (subject === undefined) {
+		subject = $(GRADE_ID + id).parent().parent().parent().children("td:eq(1)").html();
+	}
     return subject;
 }
 
@@ -559,7 +562,11 @@ function getAllSubjects(grades) {
  * @returns {id}
  */
 function getIdOfSubjectOfGrade(id) {
-    return $(GRADE_ID + id).parent().parent().next().attr('id').split("_")[1];
+	let idSubject = $(GRADE_ID + id).parent().parent().next().attr('id');
+	if (idSubject === undefined) {
+		idSubject = $(GRADE_ID + id).parent().parent().parent().next().attr('id');
+	}
+    return idSubject.split("_")[1];
 }
 
 
