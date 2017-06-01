@@ -93,6 +93,10 @@ function createContainers() {
     createLibPLUSContainer();
     $('#' + LIBPLUS_ID).append(STUDENT_AVG_CONTAINER);
     $('#' + LIBPLUS_ID).append(STUDENT_AVG_END_FIRST_CONTAINER);
+
+    $('#' + LIBPLUS_ID).append(STUDENT_AVG_PROPOSED_SECOND_CONTAINER);
+
+    $('#' + LIBPLUS_ID).append(STUDENT_AVG_END_SECOND_CONTAINER);
     $('#' + LIBPLUS_ID).append(STUDENT_GRADE_COUNTER_CONTAINER);
 
     createContainersOfSubjects();
@@ -167,6 +171,14 @@ function setAvgValueOfEndFirstPeriodOnPage(avg) {
     $('#' + STUDENT_AVG_END_FIRST_CONTAINER_ID).text(avg);
 }
 
+function setAvgValueOfEndSecondPeriodOnPage(avg) {
+    $('#' + STUDENT_AVG_END_SECOND_CONTAINER_ID).text(avg);
+}
+
+function setAvgValueOfProposedSecondPeriodOnPage(avg) {
+    $('#' + STUDENT_AVG_PROPOSED_SECOND_CONTAINER_ID).text(avg);
+}
+
 
 function setAvgValueOfDateRangeOnPage(avg) {
     $('#' + STUDENT_AVG_DATE_RAGE_CONTAINER_ID).text(roundDecimalPlaces(avg));
@@ -214,7 +226,11 @@ function calculateAndDisplayAvg() {
     setFirstSemesterAvgValueOfSubjectOnPage(user.subjects);
     setSecondSemesterAvgValueOfSubjectOnPage(user.subjects);
     setAvgValueOfSubjectOnPage(user.subjects);
-    setAvgValueOfEndFirstPeriodOnPage(roundDecimalPlaces(getCalculatedAvg(getGradesEndOfFirstPeriod(user.grades))));
+
+    setAvgValueOfEndFirstPeriodOnPage(roundDecimalPlaces(getCalculatedAvg(getGradesOfType(GRADE_END_FIRST, user.grades))));
+
+    setAvgValueOfProposedSecondPeriodOnPage(roundDecimalPlaces(getCalculatedAvg(getGradesOfType(GRADE_PROPOSED_SECOND, user.grades))));
+    setAvgValueOfEndSecondPeriodOnPage(roundDecimalPlaces(getCalculatedAvg(getGradesOfType(GRADE_END_SECOND, user.grades))));
 }
 function getCalculatedAvg(grades) {
     let avg = 0.0,
@@ -243,7 +259,9 @@ function getCalculatedAvg(grades) {
             }
         }
     });
-    avg = valSum / weightSum;
+    if (weightSum !== 0) {
+        avg = valSum / weightSum;
+    }
     return avg;
 }
 
@@ -279,19 +297,19 @@ function getAvgOfSubjectOfSemester(subjectName, semester, grades) {
  * @returns {Array}
  */
 
-function getGradesEndOfFirstPeriod(grades) {
-    let gradesEndOfFirstPeriod = [];
+function getGradesOfType(type, grades) {
+    let gradesOfType = [];
     let i = 0;
 
     grades.forEach(function (grade) {
-        if (GRADE_END_FIRST === grade.type) {
-            let gradeEndOfFirstPeriod = jQuery.extend({}, grade); // copy object
-            gradeEndOfFirstPeriod.weight = 1;
-            gradesEndOfFirstPeriod[i] = gradeEndOfFirstPeriod;
+        if (type === grade.type) {
+            let gradeOfType = jQuery.extend({}, grade); // copy object
+            gradeOfType.weight = 1;
+            gradesOfType[i] = gradeOfType;
             i++;
         }
     });
-    return gradesEndOfFirstPeriod;
+    return gradesOfType;
 }
 
 /**

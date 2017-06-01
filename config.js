@@ -47,6 +47,12 @@ var STUDENT_AVG_CONTAINER = '<div class="' + LIBPLUS_CONTAINER_ID + '"><p><b>Śr
 var STUDENT_AVG_END_FIRST_CONTAINER_ID = 'studentAvgEndOfFirstPeriod';
 var STUDENT_AVG_END_FIRST_CONTAINER = '<div class="' + LIBPLUS_CONTAINER_ID + '"><p><b>Średnia z ocen śródrocznych (I semestr): </b><span id="' + STUDENT_AVG_END_FIRST_CONTAINER_ID + '">-</span></div>';
 
+var STUDENT_AVG_PROPOSED_SECOND_CONTAINER_ID = 'studentAvgProposedOfSecondPeriod';
+var STUDENT_AVG_PROPOSED_SECOND_CONTAINER = '<div class="' + LIBPLUS_CONTAINER_ID + '"><p><b>Średnia z ocen proponowanych końcoworocznych: </b><span id="' + STUDENT_AVG_PROPOSED_SECOND_CONTAINER_ID+ '">-</span></div>';
+
+var STUDENT_AVG_END_SECOND_CONTAINER_ID = 'studentAvgEndOfSecondPeriod';
+var STUDENT_AVG_END_SECOND_CONTAINER = '<div class="' + LIBPLUS_CONTAINER_ID + '"><p><b>Średnia z ocen rocznych: </b><span id="' + STUDENT_AVG_END_SECOND_CONTAINER_ID + '">-</span></div>';
+
 /**
  * Student grade counter container on page
  */
