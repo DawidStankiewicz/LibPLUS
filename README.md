@@ -4,7 +4,7 @@ Rozszerzenie do przeglądarki Google Chrome pozwalające wyświetlić średnią 
 ## Obecne funkcje (v2.1)
 - podgląd średniej ważonej ucznia
 - podgląd średniej ważonej z każdego przedmiotu (I semestr, II semestr, całoroczna) 
-- podgląd średniej z ocen śródrocznych
+- podgląd średniej z ocen śródrocznych, przewidywanych rocznych i rocznych
 - licznik ocen ucznia
 - eksport ocen do Excela
 - wyświetlanie ocen i średniej z wybranego okresu
@@ -77,3 +77,6 @@ Funkcja może nie działać w pełni prawidłowo. Proszę zgłaszać błędy.
 ### v2.1.2 (20.03.2017)
 - poprawiony błąd powodujący problemy z wyświetlaniem średniej w drugim półroczu
 - zmiana określania semestru dla oceny - semestr jest teraz definiowany w głównej pętli tworzącej listę wszystkich ocen (findAllGrades)
+
+### v2.2.0 (01.06.2017)
+- liczenie średniej z ocen przewidywanych i rocznych
