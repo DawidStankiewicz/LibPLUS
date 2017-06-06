@@ -30,7 +30,7 @@ var GRADE_UNPREPARED = "UNPREPARED";
 var CATEGORY_PROPOSED_FISRT = 'przewidywana śródroczna';
 var CATEGORY_END_FISRT = 'śródroczna';
 var CATEGORY_PROPOSED_SECOND = 'przewidywana roczna';
-var CATEGORY_END_SECOND = 'przewidywana roczna';
+var CATEGORY_END_SECOND = 'roczna';
 
 
 /**
