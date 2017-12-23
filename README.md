@@ -80,3 +80,6 @@ Funkcja może nie działać w pełni prawidłowo. Proszę zgłaszać błędy.
 
 ### v2.2.0 (01.06.2017)
 - liczenie średniej z ocen przewidywanych i rocznych
+
+### v2.2.1 (06.06.2017)
+- naprawione liczenie średniej z ocen rocznych
