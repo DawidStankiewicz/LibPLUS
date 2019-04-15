@@ -1,7 +1,7 @@
 # LibPLUS
 Rozszerzenie do przeglądarki Google Chrome pozwalające wyświetlić średnią ucznia w systemie Librus, nawet jeżeli podgląd został wyłączony przez administrację.
 
-## Obecne funkcje (v2.1)
+## Obecne funkcje (v3.0)
 - podgląd średniej ważonej ucznia
 - podgląd średniej ważonej z każdego przedmiotu (I semestr, II semestr, całoroczna) 
 - podgląd średniej z ocen śródrocznych, przewidywanych rocznych i rocznych
@@ -30,30 +30,33 @@ Po wybraniu daty początkowej oraz końcowej (w formacie miesiąć/dzień/rok) n
 Funkcja może nie działać w pełni prawidłowo. Proszę zgłaszać błędy.
 
 ## Zgłaszanie błędów
- Wszelkie błędy można zgłaszać:
- - [przez GitHuba](https://github.com/DawidStankiewicz/LibPLUS/issues)
- - [w sklepie Google Store](https://chrome.google.com/webstore/detail/libplus-podgl%C4%85d-%C5%9Bredniej/logdgpobdggdjliepjjfmnggmbpohmka/support?hl=pl&gl=PL)
+ Wszelkie błędy można zgłaszać poprzez:
+ - [zakładkę 'Issues' na Githubie](https://github.com/DawidStankiewicz/LibPLUS/issues)
+ - [sklep Google Store](https://chrome.google.com/webstore/detail/libplus-podgl%C4%85d-%C5%9Bredniej/logdgpobdggdjliepjjfmnggmbpohmka/support?hl=pl&gl=PL)
+ - [Messengera](https://m.me/StankiewiczDawid)
 
 ## Zmiany:
 
-### v1.1
-- podgląd średniej ważonej ze wszystkich ocen
-- podgląd średniej ważonej wybranych przedmiotów
-- licznik ocen
+### v3.0.0
 
-### v1.2
-- naprawiony błąd z "np" 
-- naprawiony błąd z ocenami które nie liczą się do średniej
-- nowy wygląd menu pop-up
+### v2.2.1 (06.06.2017)
+- naprawione liczenie średniej z ocen rocznych
 
-### v1.3
-- naprawiony błąd "NaN" 
+### v2.2.0 (01.06.2017)
+- liczenie średniej z ocen przewidywanych i rocznych
 
-### v1.5 
-- naprawiony błąd z kodowaniem znaków
+### v2.1.2 (20.03.2017)
+- poprawiony błąd powodujący problemy z wyświetlaniem średniej w drugim półroczu
+- zmiana określania semestru dla oceny - semestr jest teraz definiowany w głównej pętli tworzącej listę wszystkich ocen (findAllGrades)
 
-### v1.6 
-- poprawa błędu "NaN" w przypadku braku ocen z przedmiotu (tylko plusy, minusy lub 'np')
+### v2.1.1 (06.02.2017)
+- włączenie dla trybu "od ostatniego logowania"
+- rozwiązanie problemu z uruchomieniem rozszerzenia[?] (rozszerzenie mogło się nie uruchamiać z powodu błędnego wykrywania trybu "od ostatniego logowania")
+
+### v2.1 (02.02.17)
+- wsparcie drugiego semestru
+- średnia przedmiotu z drugiego semestru
+- średnia przedmiotu całoroczna
 
 ### v2.0 (12.01.17)
 - nowe funkcje
@@ -65,21 +68,27 @@ Funkcja może nie działać w pełni prawidłowo. Proszę zgłaszać błędy.
 - adres do zgłaszania błęów w menu pop-up
 - uruchamianie tylko w trybie wszystkich ocen
 
-### v2.1 (02.02.17)
-- wsparcie drugiego semestru
-- średnia przedmiotu z drugiego semestru
-- średnia przedmiotu całoroczna
+### v1.6 
+- poprawa błędu "NaN" w przypadku braku ocen z przedmiotu (tylko plusy, minusy lub 'np')
 
-### v2.1.1 (06.02.2017)
-- włączenie dla trybu "od ostatniego logowania"
-- rozwiązanie problemu z uruchomieniem rozszerzenia[?] (rozszerzenie mogło się nie uruchamiać z powodu błędnego wykrywania trybu "od ostatniego logowania")
+### v1.5 
+- naprawiony błąd z kodowaniem znaków
 
-### v2.1.2 (20.03.2017)
-- poprawiony błąd powodujący problemy z wyświetlaniem średniej w drugim półroczu
-- zmiana określania semestru dla oceny - semestr jest teraz definiowany w głównej pętli tworzącej listę wszystkich ocen (findAllGrades)
+### v1.3
+- naprawiony błąd "NaN" 
 
-### v2.2.0 (01.06.2017)
-- liczenie średniej z ocen przewidywanych i rocznych
+### v1.2
+- naprawiony błąd z "np" 
+- naprawiony błąd z ocenami które nie liczą się do średniej
+- nowy wygląd menu pop-up
 
-### v2.2.1 (06.06.2017)
-- naprawione liczenie średniej z ocen rocznych
+### v1.1
+- podgląd średniej ważonej ze wszystkich ocen
+- podgląd średniej ważonej wybranych przedmiotów
+- licznik ocen
+
+
+
+
+
+

@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+  "name": "LibPLUS - średnia ocen na Librusie",
+  "description": "Podgląd średniej został wyłączony? To rozszerzenie rozwiąże problem!",
+  "author": "Dawid Stankiewicz",
+  "version": "3.0.0",
+  "short_name": "LibPLUS",
+  "icons": {
+    "128": "icon/icon_128.png",
+    "48": "icon/icon_48.png",
+    "16": "icon/icon_16.png"
+  },
+  "browser_action": {
+    "default_icon": "icon/icon.png",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://synergia.librus.pl/przegladaj_oceny/uczen"
+      ],
+      "js": [
+        "pagescript.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions": [
+    "activeTab"
+  ]
+}
