@@ -1,0 +1,121 @@
+@import "vars";
+
+#libplus-container {
+    float: left;
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    border: 2px solid $fg;
+    box-shadow: 0 2px 8px 4px #00000042 inset;
+    box-sizing: border-box;
+    background-color: $bg;
+    color: $fg;
+    font-family: 'Arial';
+    font-size: $font-size;
+    position: relative;
+}
+
+.Libplus__box-container {
+    display: flex;
+    justify-content: center;
+    align-content: space-between;
+    padding-top: 1rem;
+}
+
+.Libplus__box-wrapper {
+    flex: 0 0 0;
+    margin: 2rem;
+}
+
+.Libplus__box {
+    width: 6rem;
+    height: 7rem;
+    max-width: 100%;
+    padding: 0 2rem 2rem 2rem;
+    border-radius: $border-radius;
+    color: $fg-b;
+    box-shadow: 0 4px 8px 0px #00000042;
+    transition: all .4s;
+
+    &:hover .Libplus__box-content {
+        transform: scale(1.08);
+    }
+}
+
+.Libplus__box--left {
+    background: linear-gradient(to bottom right, $accent-a, $accent-b);
+}
+
+.Libplus__box--right {
+    background: linear-gradient(to top right, $accent-b, $accent-a);
+}
+
+.Libplus__box-title {
+    margin: auto;
+    text-align: center;
+    font-size: .8rem;
+    max-width: 100%;
+    padding-top: 1rem;
+    height: 2rem;
+}
+
+.Libplus__box-content {
+    transition: transform .5s ease-in-out;
+    padding: .5rem 0;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 3rem;
+    font-family: 'Arial black', sans-serif;
+}
+
+.Libplus__button-container {
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+    display: flex;
+    justify-content: center;
+}
+
+.Libplus__button-wrapper {
+    padding: 0 1rem;
+    justify-content: space-between;
+}
+
+.Libplus__button {
+    width: 120px;
+    padding: 1rem;
+    background-color: $button-bg;
+    color: $button-fg;
+    box-shadow: $button-shadow;
+    border-radius: $border-radius;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: bold;
+    transition: all .4s;
+
+    &:hover {
+        cursor: pointer;
+        transform: translateY(-5px);
+    }
+}
+
+.Libplus__button--active {
+    background: linear-gradient(to top, $accent-a, $accent-b);
+    color: $fg-b;
+    transform: translateY(-5px);
+}
+
+.Libplus__logo {
+    font-size: 2rem;
+    position: absolute;
+    top: .5rem;
+    right: .75rem;
+    font-weight: bold;
+    color: $logo;
+}
+
+.Libplus__copyright {
+    font-size: 0.73rem;
+    color: inherit;
+    display: block;
+    line-height: 0px;
+}

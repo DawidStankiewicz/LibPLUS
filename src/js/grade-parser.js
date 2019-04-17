@@ -52,19 +52,22 @@ const gradeParser = {
     },
     parseGradeValFromRawVal: function (rawValue, type) {
         let val = 0;
-        if (type === gradeType.NORMAL) {
-            const numberWithPlusMatcher = /(\d)(?:\+)/;
-            const numberWithMinusMatcher = /(\d)(?:-)/;
+        if (type === gradeType.MINUS ||
+            type === gradeType.PLUS ||
+            type === gradeType.NP) {
+            return 0;
+        }
+        const numberWithPlusMatcher = /(\d)(?:\+)/;
+        const numberWithMinusMatcher = /(\d)(?:-)/;
 
-            let numberWithPlus = rawValue.match(numberWithPlusMatcher);
-            let numberWithMinus = rawValue.match(numberWithMinusMatcher);
-            if (numberWithPlus) {
-                val = Number(numberWithPlus[1]) + 0.5;
-            } else if (numberWithMinus) {
-                val = Number(numberWithMinus[1]) - 0.25;
-            } else {
-                val = Number(rawValue);
-            }
+        let numberWithPlus = rawValue.match(numberWithPlusMatcher);
+        let numberWithMinus = rawValue.match(numberWithMinusMatcher);
+        if (numberWithPlus) {
+            val = Number(numberWithPlus[1]) + 0.5;
+        } else if (numberWithMinus) {
+            val = Number(numberWithMinus[1]) - 0.25;
+        } else {
+            val = Number(rawValue);
         }
         return val;
     },
