@@ -31,5 +31,15 @@ module.exports = {
     },
     gradeId: (id) => {
         return 'grade-' + id;
+    },
+    gradeType: {
+        PROPOSED_FIRST: 'PROPOSED_FIRST',
+        END_FISRT: 'END_FISRT',
+        PROPOSED_SECOND: 'PROPOSED_SECOND',
+        END_SECOND: 'END_SECOND',
+        PLUS: 'PLUS',
+        MINUS: 'MINUS',
+        NP: 'NP',
+        NORMAL: 'NORMAL'
     }
 }

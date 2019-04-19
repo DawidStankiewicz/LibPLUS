@@ -4,19 +4,9 @@ const {
     gradesRawValue,
     termGradesCategories,
     selectors,
-    gradeId
+    gradeId,
+    gradeType
 } = require('./patterns.js');
-
-const gradeType = {
-    PROPOSED_FIRST: 'PROPOSED_FIRST',
-    END_FISRT: 'END_FISRT',
-    PROPOSED_SECOND: 'PROPOSED_SECOND',
-    END_SECOND: 'END_SECOND',
-    PLUS: 'PLUS',
-    MINUS: 'MINUS',
-    NP: 'NP',
-    NORMAL: 'NORMAL'
-};
 
 const gradeParser = {
     parseAll: function (grades) {

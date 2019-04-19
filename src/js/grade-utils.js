@@ -19,6 +19,15 @@ const gradeUtils = {
             const toDate = new Date(to);
             return (date.getTime() >= fromDate.getTime() && date.getTime() <= toDate.getTime());
         });
+    },
+    calcLinearGPA: function (grades) {
+        const fixedWeight = grades.map(grade => {
+            return {
+                weight: 1,
+                ...grade
+            }
+        });
+        return gradeUtils.calcGradePointAverage(fixedWeight);
     }
 }
 

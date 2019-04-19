@@ -4,6 +4,7 @@ const $ = require("jquery");
 const Mustache = require("mustache");
 const template = require("../libplus-page.html");
 const gradeUtilities = require("./grade-utils");
+const {gradeType} = require('./patterns');
 
 
 const containerId = 'Libplus';
@@ -23,12 +24,18 @@ const content = {
 const buttons = {
     all: 'Libplus__button--all',
     firstTerm: 'Libplus__button--term-1',
+    firstTermProposed: 'Libplus__button--term-1-proposed',
+    firstTermEnd: 'Libplus__button--term-1-end',
     secondTerm: 'Libplus__button--term-2',
+    secondTermProposed: 'Libplus__button--term-2-proposed',
+    secondTermEnd: 'Libplus__button--term-2-end',
     period: 'Libplus__button--period',
 };
 
 const menus = {
     peroid: 'Libplus__menu-period',
+    firstTerm: 'Libplus__menu-term-1',
+    secondTerm: 'Libplus__menu-term-2',
 };
 
 let grades;
@@ -50,6 +57,23 @@ const pageController = {
         $(`.${buttons.firstTerm}`).click(this.firstTermMode);
         $(`.${buttons.secondTerm}`).click(this.secondTermMode);
         $(`.${buttons.period}`).click(this.periodMode);
+
+        if (this.isAnyGradeOfType(gradeType.PROPOSED_FIRST)) {
+            $(`.${buttons.firstTermProposed}`).click(this.firstTermProposedMode);
+            $(`.${buttons.firstTermProposed}`).show();
+        }
+        if (this.isAnyGradeOfType(gradeType.END_FISRT)) {
+            $(`.${buttons.firstTermEnd}`).click(this.firstTermEndMode);
+            $(`.${buttons.firstTermEnd}`).show();
+        }
+        if (this.isAnyGradeOfType(gradeType.PROPOSED_SECOND)) {
+            $(`.${buttons.secondTermProposed}`).click(this.secondTermProposedMode);
+            $(`.${buttons.secondTermProposed}`).show();
+        }
+        if (this.isAnyGradeOfType(gradeType.END_SECOND)) {
+            $(`.${buttons.secondTermEnd}`).click(this.secondTermEndMode);
+            $(`.${buttons.secondTermEnd}`).show();
+        }
     },
     initDatepickers: function () {
         const minDate = this.getMinDate();
@@ -147,7 +171,7 @@ const pageController = {
             rightBoxContent: termGrades.length,
         })
         pageController.toggleButton(buttons.firstTerm);
-        pageController.toggleMenu();
+        pageController.toggleMenu(menus.firstTerm);
     },
     secondTermMode: function () {
         const term = 2;
@@ -158,7 +182,7 @@ const pageController = {
             rightBoxContent: termGrades.length,
         })
         pageController.toggleButton(buttons.secondTerm);
-        pageController.toggleMenu();
+        pageController.toggleMenu(menus.secondTerm);
     },
     periodMode: function () {
         pageController.toggleButton(buttons.period);
@@ -166,6 +190,50 @@ const pageController = {
         if (pageController.isPeroidSelected()) {
             pageController.showFromPeriod();
         }
+    },
+    firstTermProposedMode: function () {
+        pageController.toggleButton(buttons.firstTermProposed);
+        const proposedGrades = grades.filter(grade =>
+            grade.term === 1 &&
+            grade.type === gradeType.PROPOSED_FIRST);
+        const gpa = gradeUtilities.calcLinearGPA(proposedGrades);
+        pageController.updateContent({
+            leftBoxContent: gpa,
+            rightBoxContent: proposedGrades.length
+        })
+    },
+    firstTermEndMode: function () {
+        pageController.toggleButton(buttons.firstTermEnd);
+        const endGrades = grades.filter(grade =>
+            grade.term === 1 &&
+            grade.type === gradeType.END_FISRT);
+        const gpa = gradeUtilities.calcLinearGPA(endGrades);
+        pageController.updateContent({
+            leftBoxContent: gpa,
+            rightBoxContent: endGrades.length
+        })
+    },
+    secondTermProposedMode: function () {
+        pageController.toggleButton(buttons.secondTermProposed);
+        const proposedGrades = grades.filter(grade =>
+            grade.term === 2 &&
+            grade.type === gradeType.PROPOSED_SECOND);
+        const gpa = gradeUtilities.calcLinearGPA(proposedGrades);
+        pageController.updateContent({
+            leftBoxContent: gpa,
+            rightBoxContent: proposedGrades.length
+        })
+    },
+    secondTermEndMode: function () {
+        pageController.toggleButton(buttons.secondTermEnd);
+        const endGrades = grades.filter(grade =>
+            grade.term === 2 &&
+            grade.type === gradeType.END_SECOND);
+        const gpa = gradeUtilities.calcLinearGPA(endGrades);
+        pageController.updateContent({
+            leftBoxContent: gpa,
+            rightBoxContent: endGrades.length
+        })
     },
     isPeroidSelected: function () {
         const from = sessionStorage.getItem(sessionStorageKeys.dateFrom);
@@ -225,6 +293,9 @@ const pageController = {
         }
         const lastSchoolDay = `${maxYear}-08-31`;
         return new Date(lastSchoolDay);
+    },
+    isAnyGradeOfType: function (type) {
+        return grades.filter(grade => grade.type === type).length >= 1;
     }
 }
 
