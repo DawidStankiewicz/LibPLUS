@@ -28,7 +28,9 @@ const dataCollector = {
     initSelectors: function () {
         let gradesTable = $(selectors.gradesTable)
             .toArray().filter(t => t.innerHTML.indexOf(selectors.testGrade) === -1)[0];
-        gradesTable.id = 'grades';
+        if (gradesTable) {
+            gradesTable.id = 'grades';
+        }
     },
 }
 
