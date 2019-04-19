@@ -1,9 +1,10 @@
-$font-size: 10px;
+$font-size: 12px;
 $border-radius: 5px;
 
 $white: #ffffff;
 $black: #000000;
 $gray: #efefef;
+$dark-gray: #4c4c4c;
 
 $bg: $white;
 $bg-b: #1D51B3;
@@ -16,5 +17,5 @@ $accent-b: #ffcc5c;
 $logo: #bfbfbf;
 
 $button-bg: $gray;
-$button-fg: #4c4c4c;
+$button-fg: $dark-gray;
 $button-shadow: 0 4px 6px 0 #00000042;

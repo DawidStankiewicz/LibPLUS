@@ -8,8 +8,9 @@ const libplus = {
         this.subjects = dataCollector.getSubjects();
         const grades = dataCollector.getGrades();
         this.grades = gradeParser.parseAll(grades);
-        pageController.init(this.grades);
-    }
+        sessionStorage.setItem('LIBPLUS_GRADES', JSON.stringify(this.grades));
+        pageController.init();
+    },
 }
 
 module.exports = libplus;

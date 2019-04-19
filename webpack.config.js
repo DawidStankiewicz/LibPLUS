@@ -77,9 +77,9 @@ module.exports = {
             chunks: ["libplus-page"]
         }),
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, "src", "background.html"),
+            template: path.join(__dirname, "src", "background.ejs"),
             filename: "background.html",
-            chunks: ["background"]
+            chunks: ["background", "libplus-page"]
         }),
         new webpack.HotModuleReplacementPlugin(),
         new WriteFilePlugin(),
