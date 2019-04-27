@@ -5,7 +5,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WriteFilePlugin = require("write-file-webpack-plugin");
 
-module.exports = {
+const options = {
     mode: 'development',
     entry: {
         pagescript: './src/js/pagescript.js',
@@ -46,6 +46,10 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(),
+        new webpack.EnvironmentPlugin({
+            NODE_ENV: 'development',
+            PORT: 3001,
+        }),
         new webpack.LoaderOptionsPlugin({
             options: {
                 webServerConfig: {
@@ -85,3 +89,10 @@ module.exports = {
         new WriteFilePlugin(),
     ],
 };
+
+if (process.env.NODE_ENV === "development") {
+    console.log(`NODE ENV: ${process.env.NODE_ENV}`);
+    options.devtool = "cheap-module-eval-source-map";
+}
+
+module.exports = options;
