@@ -2,10 +2,12 @@
 <html>
   <head>
     <title>LibPLUS</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-138677716-1"></script>
     <link href="css/popup.min.css" type="text/css" rel="stylesheet"/>
+    <script src="stats.js"></script>
     <script src="popup.js"></script>
     <script src="jquery.js"></script>
-	<meta charset="UTF-8">
+    <meta charset="UTF-8">
   </head>
   <body>
 	<div class="col">
@@ -16,24 +18,24 @@
 
 		<div class="row">
 			<div class="button">
-				<a href="https://goo.gl/b6nbSZ" target="_blank">przejdź do ocen</a>
+				<a href="https://goo.gl/b6nbSZ" class="ga" target="_blank" id="Button-grades">przejdź do ocen</a>
             </div>
         </div>
 
         <div class="row">
             <div class="button">
-                <a href="https://goo.gl/gHgfPB" target="_blank">zgłaszanie błędów</a>
+                <a href="https://goo.gl/gHgfPB" class="ga" target="_blank" id="Button-report-errors">zgłaszanie błędów</a>
             </div>
         </div>
 
         <div class="row">
             <div class="button">
-                <a href="https://goo.gl/DnCKrn" target="_blank">kod źródłowy</a>
+                <a href="https://goo.gl/DnCKrn" class="ga" target="_blank" id="Button-source">kod źródłowy</a>
             </div>
         </div>
 
 		<div class="footer">
-			<span><span class="version"></span><a class="black" href="https://goo.gl/3vInlU" target="_blank"> &copy; Dawid Stankiewicz</a></span>
+			<span><span class="version"></span><a class="black ga" id="Button-author" href="https://goo.gl/3vInlU" target="_blank"> &copy; Dawid Stankiewicz</a></span>
 		</div>
 
 	</div>
