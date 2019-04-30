@@ -30,7 +30,7 @@ const options = {
                 use: {
                     loader: 'html-loader',
                     options: {
-                        attrs: [':data-src']
+                        attrs: [':data-src'],
                     }
                 }
             },
@@ -49,6 +49,7 @@ const options = {
         new webpack.EnvironmentPlugin({
             NODE_ENV: 'development',
             PORT: 3001,
+            GA_TRACKING_ID: 'UA-138677716-1',
         }),
         new webpack.LoaderOptionsPlugin({
             options: {
@@ -91,7 +92,6 @@ const options = {
 };
 
 if (process.env.NODE_ENV === "development") {
-    console.log(`NODE ENV: ${process.env.NODE_ENV}`);
     options.devtool = "cheap-module-eval-source-map";
 }
 
