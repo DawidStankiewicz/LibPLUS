@@ -647,7 +647,6 @@ function isDateInSelectedRange(date, dateRangeStart, dateRangeEnd) {
 
 function createButtons() {
     addUpdateButtonOnPage();
-    addExportToExcelButtonOnPage();
 }
 
 /**
@@ -665,46 +664,6 @@ function updateAll() {
     user = getUserWithData();
     calculateAndDisplayAvg();
     console.log("updated");
-}
-
-/**
- * Export user's data thanks to ExcelPlus
- *
- * http://aymkdn.github.io/ExcelPlus/
- */
-function addExportToExcelButtonOnPage() {
-    $(".inside")
-        .after('<div id="exportButton" title="Eksportuj oceny do Excela dzięki rozszerzeniu LibPLUS!"><span class="fold"><a href="#" class="fold-link"><span class="fold-start">Eksportuj</span><span class="fold-end"></span></a></span></div>');
-    $("#exportButton").click(function () {
-        exportDataToExcel();
-    });
-}
-
-function exportDataToExcel() {
-    let excelPlus = new ExcelPlus();
-    excelPlus
-        .createFile("Oceny")
-        .write({"content": [['ID', 'PRZEDMIOT', 'NAUCZYCIEL', 'DATA', 'KATEGORIA', 'TYP', 'DODANE PRZEZ', 'RAW', 'OCENA', 'WAGA']]});
-    let line = 2;
-    user.grades.forEach(function (grade) {
-        let weight = Number(grade.weight);
-        excelPlus
-            .write({'cell': 'A' + line, 'content': grade.id})
-            .write({'cell': 'B' + line, 'content': grade.subject})
-            .write({'cell': 'C' + line, 'content': grade.teacher})
-            .write({'cell': 'D' + line, 'content': grade.date})
-            .write({'cell': 'E' + line, 'content': grade.category})
-            .write({'cell': 'F' + line, 'content': grade.type})
-            .write({'cell': 'G' + line, 'content': grade.addedBy})
-            .write({'cell': 'H' + line, 'content': grade.rawVal})
-            .write({"cell": "I" + line, "content": grade.val === 0 ? 0 + "" : Number(grade.val)})
-            .write({"cell": "J" + line, "content": "" + Number(weight)});
-        line++;
-    });
-    let fileName = user.name + 'LibPLUS-' + new Date().getTime() + '.xlsx';
-    fileName = fileName.replace(/\u00a0| /g, "_");
-    excelPlus.saveAs(fileName);
-    console.log('Generated file: ' + fileName);
 }
 
 
