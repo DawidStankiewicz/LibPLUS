@@ -9,6 +9,9 @@ const {
 } = require('./patterns.js');
 
 const gradeParser = {
+    init: function(page) {
+        this.page = page;
+    },
     parseAll: function (grades) {
         let parsed = [];
         grades.forEach(grade => {
@@ -81,7 +84,7 @@ const gradeParser = {
         return gradeType.NORMAL;
     },
     parseGradeTerm: function (id) {
-        const cellIndex = $(selectors.grade(gradeId(id))).parents().closest('td')[0].cellIndex;
+        const cellIndex = $(this.page).find(selectors.grade(gradeId(id))).parents().closest('td')[0].cellIndex;
         switch (cellIndex) {
             case 2:
             case 4:
@@ -95,7 +98,7 @@ const gradeParser = {
         return 0;
     },
     parseGradeSubject: function (id) {
-        const parentId = $(selectors.grade(gradeId(id))).parents().closest('tr')[0].id;
+        const parentId = $(this.page).find(selectors.grade(gradeId(id))).parents().closest('tr')[0].id;
         const subjectId = parentId.split('-')[1];
         return {id: subjectId};
     }

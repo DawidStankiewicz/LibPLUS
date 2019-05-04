@@ -41,14 +41,14 @@ const options = {
                     "css-loader",
                     "sass-loader"
                 ]
-            },
+            }
         ],
     },
     plugins: [
         new CleanWebpackPlugin(),
         new webpack.EnvironmentPlugin({
             NODE_ENV: 'development',
-            PORT: 3001,
+            PORT: '3001',
             GA_TRACKING_ID: 'UA-138677716-1',
         }),
         new webpack.LoaderOptionsPlugin({

@@ -1,13 +1,14 @@
-const dataCollector = require('./data-collector.js');
+const dataScraper = require('./data-scraper.js');
 const gradeParser = require('./grade-parser.js');
 const pageController = require('./page-controller.js');
 const subjectController = require('./subject-controller.js');
 
 const libplus = {
     init: function () {
-        dataCollector.initSelectors();
-        this.subjects = dataCollector.getSubjects();
-        const grades = dataCollector.getGrades();
+        dataScraper.initSelectors(document);
+        this.subjects = dataScraper.getSubjects();
+        const grades = dataScraper.getGrades();
+        gradeParser.init(document);
         this.grades = gradeParser.parseAll(grades);
         sessionStorage.setItem('LIBPLUS_GRADES', JSON.stringify(this.grades));
         sessionStorage.setItem('LIBPLUS_SUBJECTS', JSON.stringify(this.subjects));

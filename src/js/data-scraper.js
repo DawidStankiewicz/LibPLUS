@@ -1,10 +1,10 @@
 const $ = require("jquery");
 const {gradeId, selectors} = require('./patterns.js');
 
-const dataCollector = {
+const dataScraper = {
     getSubjects: function () {
         let subjects = [];
-        $(selectors.rowsWithGrades + ' > ' + selectors.subjectNameRow)
+        $(this.page).find(selectors.rowsWithGrades + ' > ' + selectors.subjectNameRow)
             .toArray().forEach((rawName, id) => {
             rawName.parentElement.id = 'subject-' + id;
             subjects.push({
@@ -16,7 +16,7 @@ const dataCollector = {
     },
     getGrades: function () {
         let grades = [];
-        $(selectors.gradeBox).toArray().filter((raw, id) => id != 0).forEach((raw, id) => {
+        $(this.page).find(selectors.gradeBox).toArray().filter((raw, id) => id != 0).forEach((raw, id) => {
             raw.id = gradeId(id);
             grades.push({
                 id,
@@ -25,13 +25,15 @@ const dataCollector = {
         })
         return grades;
     },
-    initSelectors: function () {
-        let gradesTable = $(selectors.gradesTable)
+    initSelectors: function (page) {
+        this.page = page;
+        let gradesTable = $(this.page).find(selectors.gradesTable)
             .toArray().filter(t => t.innerHTML.indexOf(selectors.testGrade) === -1)[0];
         if (gradesTable) {
             gradesTable.id = 'grades';
         }
+        return this.page;
     },
 }
 
-module.exports = dataCollector;
+module.exports = dataScraper;

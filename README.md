@@ -19,15 +19,13 @@ Gotowe.
 
 
 ## Eksport ocen do Excela
-Żeby pobrać kopię swoich ocen, wystarczy użyć zielonego przycisku "Eksportuj".
+W wersji 3.0 funkcja eksportu ocen została usunięta.
 
-Funkcja zrealizowana dzięki [ExcelPlus](http://aymkdn.github.io/ExcelPlus)
+## Demo - konto testowe
+Po instalacji rozszerzenie można przetestować logując się na konto testowe [portal.librus.pl](https://portal.librus.pl/rodzina/synergia/loguj)
 
-## Oceny z wybranego okresu
-W wersji 2.0.0 wprowadzona została funkcja wyświetlania ocen i średniej z wybranego okresu. 
-Po wybraniu daty początkowej oraz końcowej (w formacie miesiąć/dzień/rok) należy wcisnąć przycisk "POKAŻ". Wyświetlą się oceny i średnia tylko z wybranego okresu.
-
-Funkcja może nie działać w pełni prawidłowo. Proszę zgłaszać błędy.
+- login: `demorodzic` lub `13335` 
+- hasło: `librus11`
 
 ## Zgłaszanie błędów
  Wszelkie błędy można zgłaszać poprzez:

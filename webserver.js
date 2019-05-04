@@ -5,12 +5,13 @@ var WebpackDevServer = require("webpack-dev-server"),
 
 var options = (config.webServerConfig || {});
 var excludeEntriesToHotReload = (options.notHotReload || []);
+const port = process.env.PORT || 3000;
 
 for (var entryName in config.entry) {
     if (excludeEntriesToHotReload.indexOf(entryName) === -1) {
         config.entry[entryName] =
             [
-                ("webpack-dev-server/client?http://localhost:" + process.env.PORT),
+                ("webpack-dev-server/client?http://localhost:" + port),
                 "webpack/hot/dev-server"
             ].concat(config.entry[entryName]);
     }
@@ -31,4 +32,4 @@ var server =
         disableHostCheck: true
     });
 
-server.listen(process.env.PORT);
+server.listen(port);

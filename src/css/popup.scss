@@ -1,0 +1,15 @@
+@import "vars";
+
+body {
+	margin: 0;
+	font-size: $font-size;
+}
+
+.version {
+	position: absolute;
+	bottom: .1rem;
+	right: .2rem;
+	font-size: 1em;
+	color: $logo;
+}
+

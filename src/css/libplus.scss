@@ -1,19 +1,19 @@
 @import "vars";
 
 #Libplus {
-  float: left;
   width: 100%;
-  margin-top: 1rem;
-  margin-bottom: 2rem;
   padding-bottom: 2em;
-  border: 2px solid $dark-gray;
-  box-shadow: 0 2px 8px 4px #00000042 inset;
   box-sizing: border-box;
   background-color: $bg;
   color: $fg;
+  border: 2px solid $dark-gray;
   font-family: 'Arial';
   font-size: $font-size;
   position: relative;
+
+  a {
+    text-decoration: none;
+  }
 }
 
 .Libplus__box-container {
@@ -148,8 +148,8 @@
 .Libplus__logo {
   font-size: 2.5em;
   position: absolute;
-  top: .3em;
-  right: .4em;
+  top: .1em;
+  right: .2em;
   font-weight: bold;
   color: $logo;
 }
