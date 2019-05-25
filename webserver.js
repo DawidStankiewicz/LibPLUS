@@ -28,8 +28,9 @@ var server =
     new WebpackDevServer(compiler, {
         hot: true,
         contentBase: path.join(__dirname, "../dist"),
-        headers: { "Access-Control-Allow-Origin": "*" },
-        disableHostCheck: true
+        headers: {"Access-Control-Allow-Origin": "*"},
+        disableHostCheck: true,
+        port: port,
     });
 
 server.listen(port);

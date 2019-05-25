@@ -2,74 +2,133 @@ require("./analytics").init();
 require("../css/popup.scss");
 const $ = require("jquery");
 const appVersion = chrome.runtime.getManifest().version;
-const dataScraper = require('./data-scraper');
-const gradeParser = require('./grade-parser.js');
-const gradeUtilities = require('./grade-utils');
-const pageController = require('./libplus-controller')
-const axios = require('axios');
+const popupHelloController = require('./popup-hello-controller');
+const libplusController = require('./libplus-controller');
 
+const popupNav = 'Popup__nav';
+const menus = {
+    user: 'Popup__user',
+}
+
+const buttons = {
+    logout: 'Popup-nav-logout',
+}
+
+
+// todo doing promises
 const popup = {
-    init() {
-        document.querySelector('.version').innerText = appVersion;
-        const buttons = document.querySelectorAll('.Libplus__ga-item');
-        for (let i = 0; i < buttons.length; i++) {
-            buttons[i].addEventListener('click', this.trackButtonClick);
-        }
-        this.authorize();
-        this.scrapData();
+
+    async init() {
+        document.querySelector('.Popup__version').innerText = `v${appVersion}`;
+        this.initButtons();
+        this.checkIfAuthorized()
+            .then(authorized => {
+                if (authorized) {
+                    popupHelloController.hideHelloMenu();
+                    popup.showUserMenu();
+                    popup.showNavbar();
+                }
+            }, reason => {
+                if (reason.message !== 'unauthorized') {
+                    console.error(reason);
+                }
+            });
+    },
+
+    checkIfAuthorized() {
+        let promise = new Promise((resolve, reject) => {
+            chrome.storage.local.get(['isAuthorized'], function (storage) {
+                const { isAuthorized } = storage;
+                if (isAuthorized) {
+                    resolve(isAuthorized);
+                } else {
+                    reject(Error('unauthorized'));
+                }
+            })
+        });
+
+        return promise;
     },
     trackButtonClick(e) {
         const id = e.target.id;
         _gaq.push(['_trackEvent', id, 'clicked', appVersion]);
     },
-    scrapData() {
-        $.get('https://synergia.librus.pl/przegladaj_oceny/uczen', function (response) {
-            response = response.replace(/<head>[.\w\W]*<\/head>/, '').replace(/<script.*\/?>(([.\w\W])*?)<\/script>/gm, '').replace(/<img/, /<div/);
-            const page = $(response);
-            dataScraper.initSelectors(page);
-            this.subjects = dataScraper.getSubjects();
-            const grades = dataScraper.getGrades();
-            gradeParser.init(page);
-            this.grades = gradeParser.parseAll(grades);
-            const gpa = gradeUtilities.calcGradePointAverage(this.grades);
-            sessionStorage.setItem('LIBPLUS_GRADES', JSON.stringify(this.grades));
-            sessionStorage.setItem('LIBPLUS_SUBJECTS', JSON.stringify(this.subjects));
-            pageController.init();
+    initButtons() {
+        const gaButtons = document.querySelectorAll('.Libplus__ga-item');
+        for (let i = 0; i < gaButtons.length; i++) {
+            gaButtons[i].addEventListener('click', this.trackButtonClick);
+        }
+        $(`#${buttons.logout}`).click(function () {
+            popup.logout();
         });
     },
-    authorize() {
-        const config = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-        };
-        const form = new FormData();
-        form.append('action', 'login');
-        form.append('login', 'demorodzic');
-        form.append('pass', 'librus11');
-        const getCookieURL = 'https://api.librus.pl/OAuth/Authorization?client_id=46&response_type=code&scope=mydata';
-        const postFormURL = 'https://api.librus.pl/OAuth/Authorization?client_id=46';
-        const getGrantURL = 'https://api.librus.pl/OAuth/Authorization/Grant?client_id=46';
-        let loginSuccess = false;
-        axios.get(getCookieURL)
-            .then(() => {
-                return axios.post(postFormURL, form, config)
-                    .then((response) => {
-                        loginSuccess = true;
-                        console.log('login success ? ', response.data.status === 'ok')
-                    })
-            })
-            .then(() => {
-                    return axios
-                        .get(getGrantURL)
-                        .then(response => {
-                            loginSuccess = true;
-                            console.log('last response ', response);
-                        })
-                }
-            )
+    onLoginSuccess() {
+        console.log('[LibPlus] login success!');
+        popupHelloController.hideHelloMenu();
+        popup.showNavbar();
+        this.fetchData();
+    },
+    onLoginFailed(e) {
+        console.log('[LibPlus] login failed!');
+        popupHelloController.onLoginFailed(e);
+    },
+    showUserMenu() {
+        popupHelloController.hideHelloMenu();
+        $(`.${menus.user}`).fadeIn(0);
+        popup.showData();
+    },
+    showData(updatedData) {
+        if (updatedData) {
+            libplusController.initPrepared(updatedData.grades, updatedData.gpa);
+            return;
+        }
+        const data = ['grades', 'gpa'];
+        chrome.storage.local.get(data, storage => {
+            const {grades, gpa} = storage;
+            console.log('show data: ', storage.gpa)
+            libplusController.initPrepared(grades, gpa);
+        })
+    },
+    showNavbar() {
+        $(`.${popupNav}`).slideDown(100);
+    },
+    hideNavbar() {
+        $(`.${popupNav}`).slideUp(100);
+    },
+    hideUserMenu() {
+        popupHelloController.showHelloMenu();
+        $(`.${menus.user}`).hide();
+    },
+    logout() {
+        chrome.storage.local.clear();
+        popup.hideUserMenu();
+        popup.hideNavbar();
+    },
+    fetchData() {
+        chrome.runtime.sendMessage({
+            method: 'fetchData',
+        });
+    },
+    onDataUpdated(data) {
+        popup.showData(data);
+        $(`.${menus.user}`).fadeIn(0);
     }
 }
+
+chrome.runtime.onMessage.addListener(function (request) {
+    switch (request.method) {
+        case 'loginSuccess':
+            popup.onLoginSuccess();
+            break;
+        case 'loginFailed':
+            popup.onLoginFailed(request.data.errors);
+            break;
+        case 'onDataUpdated':
+            popup.onDataUpdated(request.data.updatedData);
+            break;
+    }
+    return true;
+});
 
 window.onload = popup.init();
 

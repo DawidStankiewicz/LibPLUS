@@ -1,15 +1,242 @@
 @import "vars";
 
+* {
+  box-sizing: border-box;
+}
+
 body {
-	margin: 0;
-	font-size: $font-size;
+  margin: 0;
+  font-size: $font-size;
+  min-width: 600px;
+  width: 600px;
+  color: $dark-gray;
 }
 
-.version {
-	position: absolute;
-	bottom: .1rem;
-	right: .2rem;
-	font-size: 1em;
-	color: $logo;
+.Popup__container {
+  .Libplus__logo {
+    position: absolute;
+    line-height: 3em;
+    font-size: 2.5em;
+    top: -2.25em;
+    left: .5em;
+  }
+
+  .Libplus__copyright {
+    display: none;
+  }
 }
 
+.Popup__hello-logo {
+  text-align: center;
+  height: 4em;
+  margin-bottom: 2em;
+
+  h1 {
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
+
+  .Popup__hello-logo-text {
+    font-weight: lighter;
+  }
+}
+
+.Popup__hello {
+  display: flex;
+  padding: 2em 0;
+}
+
+.Popup__hello-menu {
+  flex: 0 0 200px;
+}
+
+.Popup__hello-menu-item {
+  margin-top: 1em;
+  background-color: $gray;
+  border-top-right-radius: 999px;
+  border-bottom-right-radius: 999px;
+  box-shadow: $button-shadow;
+
+  a {
+    display: block;
+    color: $dark-gray;
+    text-decoration: none;
+    padding: 1em 1em 1em 2em;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &:first-of-type  {
+    margin-top: 0;
+  }
+
+  &:last-of-type {
+    margin-bottom: 2em;
+  }
+}
+
+.Popup__login-form {
+  flex: 1 0 auto;
+  padding-top: 2em;
+}
+
+.Popup__input-container {
+  width: 50%;
+  margin: auto;
+}
+
+.Popup__input-wrapper {
+  margin-bottom: 1em;
+  width: 100%;
+}
+
+.Popup__input {
+  padding: .5em .75em;
+  display: block;
+  border-radius: 999px;
+  border: none;
+  background-color: $gray;
+  width: 100%;
+  box-shadow: $button-shadow;
+}
+
+.Popup__input-label {
+  display: block;
+  color: $dark-gray;
+  padding-left: 1em;
+  padding-bottom: .375em;
+}
+
+.Popup__input--checkbox {
+  display: none;
+
+  &:checked + .Popup__input-label--checkbox::after {
+    content: "";
+  }
+
+  &:focus + .Popup__input-label--checkbox::before {
+    outline: rgb(59, 153, 252) auto 5px;
+  }
+}
+
+.Popup__input-label--checkbox {
+  color: $dark-gray;
+  display: inline-block;
+  position: relative;
+  padding: .5em .5em .5em 2em;
+  cursor: pointer;
+  line-height: 1.25em;
+
+  &:before, &:after {
+    position: absolute;
+    content: "";
+    display: inline-block;
+  }
+
+  &:before {
+    height: 1.25em;
+    width: 1.25em;
+    left: 0;
+    border: 1px solid $dark-gray;
+    border-radius: 3px;
+  }
+
+  &:after {
+    height: .4em;
+    width: .8em;
+    border-left: 2px solid;
+    border-bottom: 2px solid $dark-gray;
+
+    transform: rotate(-45deg);
+
+    left: .25em;
+    top: .75em;
+  }
+}
+
+.Popup__input--checkbox + .Popup__input-label--checkbox::after {
+  content: none;
+}
+
+.Popup__button {
+  color: $dark-gray;
+  width: auto;
+  cursor: pointer;
+  border-radius: 999px;
+  border: none;
+  background-color: $gray;
+  padding: .75em 1.5em;
+  box-shadow: $button-shadow;
+  float: right;
+}
+
+.Popup__login-info {
+  max-width: 300px;
+
+  a {
+    color: inherit;
+  }
+}
+
+.float-clearfix {
+  clear: both;
+}
+
+.Popup__nav {
+  background-color: $darker-gray;
+  box-shadow: $button-shadow;
+  position: relative;
+  z-index: 10;
+}
+
+.Popup__nav-items-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.Popup__nav-item-wrapper {
+  width: 7em;
+
+}
+
+.Popup__nav-item {
+  width: 100%;
+  height: 100%;
+  padding: 1.5em 1em;
+  color: $gray;
+  text-align: center;
+  display: block;
+  text-decoration: none;
+
+
+  &:hover {
+    background-color: lighten($darker-gray, 8);
+    color: $white;
+    cursor: pointer;
+  }
+
+  a {
+    color: $gray;
+    display: block;
+  }
+}
+
+.Popup__copyright {
+  font-size: 1em;
+  margin-bottom: .1em;
+  margin-left: .2em;
+  a {
+    text-decoration: none;
+    color: $logo;
+  }
+}
+
+.Popup__version {
+  position: absolute;
+  bottom: .1em;
+  right: .2em;
+  font-size: 1em;
+  color: $logo;
+}

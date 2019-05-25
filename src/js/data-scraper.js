@@ -2,9 +2,21 @@ const $ = require("jquery");
 const {gradeId, selectors} = require('./patterns.js');
 
 const dataScraper = {
-    getSubjects: function () {
+    getData(sourcePage) {
+        dataScraper.sourcePage = sourcePage;
+        dataScraper.initSelectors();
+
+        const subjects = this.getSubjects();
+        const grades = this.getGrades();
+
+        return {
+            subjects,
+            grades
+        }
+    },
+    getSubjects() {
         let subjects = [];
-        $(this.page).find(selectors.rowsWithGrades + ' > ' + selectors.subjectNameRow)
+        $(this.sourcePage).find(selectors.rowsWithGrades + ' > ' + selectors.subjectNameRow)
             .toArray().forEach((rawName, id) => {
             rawName.parentElement.id = 'subject-' + id;
             subjects.push({
@@ -14,9 +26,9 @@ const dataScraper = {
         })
         return subjects;
     },
-    getGrades: function () {
+    getGrades() {
         let grades = [];
-        $(this.page).find(selectors.gradeBox).toArray().filter((raw, id) => id != 0).forEach((raw, id) => {
+        $(this.sourcePage).find(selectors.gradeBox).toArray().filter((raw, id) => id != 0).forEach((raw, id) => {
             raw.id = gradeId(id);
             grades.push({
                 id,
@@ -25,15 +37,18 @@ const dataScraper = {
         })
         return grades;
     },
-    initSelectors: function (page) {
-        this.page = page;
-        let gradesTable = $(this.page).find(selectors.gradesTable)
+    initSelectors() {
+        let gradesTable = $(dataScraper.sourcePage).find(selectors.gradesTable)
             .toArray().filter(t => t.innerHTML.indexOf(selectors.testGrade) === -1)[0];
         if (gradesTable) {
             gradesTable.id = 'grades';
+        } else {
+            throw new Error('table not found!');
         }
-        return this.page;
     },
+    setSourcePage(sourcePage) {
+        this.sourcePage = sourcePage;
+    }
 }
 
 module.exports = dataScraper;

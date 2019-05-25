@@ -38,16 +38,33 @@ const menus = {
     secondTerm: 'Libplus__menu-term-2',
 };
 
-let grades;
-
 const libplusController = {
     init: function () {
-        grades = JSON.parse(sessionStorage.getItem(sessionStorageKeys.grades));
         Mustache.parse(template);
-        this.allGradesMode();
-        this.initRender();
+        this.grades = JSON.parse(sessionStorage.getItem(sessionStorageKeys.grades));
+        const gpa = gradeUtilities.calcGradePointAverage(libplusController.grades);
+        const initData = {
+            leftBoxContent: gpa,
+            rightBoxContent: libplusController.grades.length,
+        }
+        this.initRender(initData);
         this.initButtons();
         this.initDatepickers();
+        this.toggleButton(buttons.all);
+    },
+    initPrepared(grades, gpa) {
+        this.grades = grades;
+        this.gpa = gpa;
+
+        Mustache.parse(template);
+        this.initRender({
+            leftBoxContent: gpa,
+            rightBoxContent: grades.length,
+        });
+
+        this.initButtons();
+        this.initDatepickers();
+        this.toggleButton(buttons.all);
     },
     initButtons: function () {
         $(`.${buttons.all}`).click(this.allGradesMode);
@@ -99,14 +116,10 @@ const libplusController = {
             onSelect: libplusController.secondDateSelected
         });
     },
-    initRender: function () {
-        const gpa = gradeUtilities.calcGradePointAverage(grades);
-        const data = {
-            leftBoxContent: gpa,
-            rightBoxContent: grades.length,
-        }
+    initRender: function (data) {
         const rendered = Mustache.render(template, data);
         $(`#${containerId}`).html(rendered);
+        console.log('rendered template');
     },
     updateContent: function (data) {
         const initState = {
@@ -151,17 +164,17 @@ const libplusController = {
         }
     },
     allGradesMode: function () {
-        const gpa = gradeUtilities.calcGradePointAverage(grades);
+        const gpa = gradeUtilities.calcGradePointAverage(libplusController.grades);
         libplusController.updateContent({
             leftBoxContent: gpa,
-            rightBoxContent: grades.length,
+            rightBoxContent: libplusController.grades.length,
         });
         libplusController.toggleButton(buttons.all);
         libplusController.toggleMenu();
     },
     firstTermMode: function () {
         const term = 1;
-        const termGrades = grades.filter(grade => grade.term == term);
+        const termGrades = libplusController.grades.filter(grade => grade.term == term);
         const gpa = gradeUtilities.calcGradePointAverage(termGrades);
         libplusController.updateContent({
             leftBoxContent: gpa,
@@ -172,7 +185,7 @@ const libplusController = {
     },
     secondTermMode: function () {
         const term = 2;
-        const termGrades = grades.filter(grade => grade.term == term);
+        const termGrades = libplusController.grades.filter(grade => grade.term == term);
         const gpa = gradeUtilities.calcGradePointAverage(termGrades);
         libplusController.updateContent({
             leftBoxContent: gpa,
@@ -190,7 +203,7 @@ const libplusController = {
     },
     firstTermProposedMode: function () {
         libplusController.toggleButton(buttons.firstTermProposed);
-        const proposedGrades = grades.filter(grade =>
+        const proposedGrades = libplusController.grades.filter(grade =>
             grade.term === 1 &&
             grade.type === gradeType.PROPOSED_FIRST);
         const gpa = gradeUtilities.calcLinearGPA(proposedGrades);
@@ -201,7 +214,7 @@ const libplusController = {
     },
     firstTermEndMode: function () {
         libplusController.toggleButton(buttons.firstTermEnd);
-        const endGrades = grades.filter(grade =>
+        const endGrades = libplusController.grades.filter(grade =>
             grade.term === 1 &&
             grade.type === gradeType.END_FISRT);
         const gpa = gradeUtilities.calcLinearGPA(endGrades);
@@ -212,7 +225,7 @@ const libplusController = {
     },
     secondTermProposedMode: function () {
         libplusController.toggleButton(buttons.secondTermProposed);
-        const proposedGrades = grades.filter(grade =>
+        const proposedGrades = libplusController.grades.filter(grade =>
             grade.term === 2 &&
             grade.type === gradeType.PROPOSED_SECOND);
         const gpa = gradeUtilities.calcLinearGPA(proposedGrades);
@@ -223,7 +236,7 @@ const libplusController = {
     },
     secondTermEndMode: function () {
         libplusController.toggleButton(buttons.secondTermEnd);
-        const endGrades = grades.filter(grade =>
+        const endGrades = libplusController.grades.filter(grade =>
             grade.term === 2 &&
             grade.type === gradeType.END_SECOND);
         const gpa = gradeUtilities.calcLinearGPA(endGrades);
@@ -264,7 +277,7 @@ const libplusController = {
     showFromPeriod: function () {
         const from = sessionStorage.getItem(sessionStorageKeys.dateFrom);
         const to = sessionStorage.getItem(sessionStorageKeys.dateTo);
-        const selectedGrades = gradeUtilities.getGradesFromPeriod(grades, from, to);
+        const selectedGrades = gradeUtilities.getGradesFromPeriod(libplusController.grades, from, to);
         const gpa = gradeUtilities.calcGradePointAverage(selectedGrades);
         libplusController.updateContent({
             leftBoxContent: gpa,
@@ -292,7 +305,7 @@ const libplusController = {
         return new Date(lastSchoolDay);
     },
     isAnyGradeOfType: function (type) {
-        return grades.filter(grade => grade.type === type).length >= 1;
+        return libplusController.grades.filter(grade => grade.type === type).length >= 1;
     }
 }
 

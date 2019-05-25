@@ -5,7 +5,8 @@ const subjectController = require('./subject-controller.js');
 
 const libplus = {
     init: function () {
-        dataScraper.initSelectors(document);
+        dataScraper.setSourcePage(document);
+        dataScraper.initSelectors();
         this.subjects = dataScraper.getSubjects();
         const grades = dataScraper.getGrades();
         gradeParser.init(document);

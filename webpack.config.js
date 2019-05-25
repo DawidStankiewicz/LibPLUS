@@ -17,11 +17,14 @@ const options = {
         path: path.resolve(__dirname, 'dist')
     },
     resolve: {
-        extensions: ['.js', '.css', '.scss']
+        extensions: ['.js', '.css', '.scss', '.json']
     },
     devServer: {
-        contentBase: './dist',
+        contentBase: './src',
         hot: true,
+        port: 3001,
+        disableHostCheck: true,
+        writeToDisk: true,
     },
     module: {
         rules: [
@@ -45,18 +48,13 @@ const options = {
         ],
     },
     plugins: [
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin({
+            cleanStaleWebpackAssets: false,
+        }),
         new webpack.EnvironmentPlugin({
             NODE_ENV: 'development',
             PORT: '3001',
             GA_TRACKING_ID: 'UA-138677716-1',
-        }),
-        new webpack.LoaderOptionsPlugin({
-            options: {
-                webServerConfig: {
-                    notHotReload: ['manifest.json'],
-                }
-            }
         }),
         new CopyWebpackPlugin([{
             from: "src/manifest.json",

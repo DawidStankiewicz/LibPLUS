@@ -3,16 +3,18 @@
 #Libplus {
   width: 100%;
   padding-bottom: 2em;
-  box-sizing: border-box;
   background-color: $bg;
   color: $fg;
-  border: 2px solid $dark-gray;
-  font-family: 'Arial';
+  font-family: 'Arial', sans-serif;
   font-size: $font-size;
   position: relative;
 
   a {
     text-decoration: none;
+  }
+
+  * {
+    box-sizing: border-box;
   }
 }
 
@@ -29,8 +31,8 @@
 }
 
 .Libplus__box {
-  width: 10em;
-  height: 11em;
+  width: 14em;
+  height: 13em;
   max-width: 100%;
   padding: 0 2em 2em 2em;
   border-radius: $border-radius;
@@ -57,7 +59,7 @@
   font-size: 1em;
   max-width: 100%;
   padding-top: 1em;
-  height: 2em;
+  height: 3em;
 }
 
 .Libplus__box-content {
@@ -148,15 +150,17 @@
 .Libplus__logo {
   font-size: 2.5em;
   position: absolute;
-  top: .1em;
-  right: .2em;
+  top: -1.5em;
+  left: .5em;
   font-weight: bold;
-  color: $logo;
+  color: $white;
+  z-index: 11;
 }
 
 .Libplus__copyright {
-  font-size: 0.36em;
-  color: inherit;
+  font-size: 0.38em;
+  font-weight: normal;
+  color: $logo-copy;
   display: block;
   line-height: 0px;
 }
