@@ -116,18 +116,17 @@ const backgroundService = {
                 gradeParser.init(page);
                 const grades = gradeParser.parseAll(scrapedData.grades);
                 const gpa = gradeUtilities.calcGradePointAverage(grades);
-
                 const updatedData = {
                     grades,
                     gpa,
                     announcements: scrapedData.announcements,
+                    events: scrapedData.events,
                     messages: scrapedData.messages,
                     user: scrapedData.user,
                     lastUpdateTime: new Date().getTime(),
                 };
 
                 return updatedData;
-
             })
             .catch(reason => {
                 if (reason.message === 'unauthorized') {
@@ -162,8 +161,14 @@ const backgroundService = {
             })
         }))
             .then(storage => {
-                const isAnyChange = storage.grades.length === updatedData.grades.length ||
-                    updatedData.announcements || updatedData.messages;
+                let isAnyChange = false;
+                if (storage.grades) {
+                    isAnyChange = (storage.grades &&
+                        storage.grades.length === updatedData.grades.length) ||
+                        updatedData.announcements ||
+                        updatedData.messages ||
+                        updatedData.events;
+                }
                 return {
                     ...updatedData,
                     isAnyChange

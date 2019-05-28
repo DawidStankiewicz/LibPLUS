@@ -8,10 +8,18 @@ const dataScraper = {
 
         const subjects = this.getSubjects();
         const grades = this.getGrades();
+        const user = this.getUser();
+        const messages = this.getNotificationsNumber(selectors.messagesNotifications);
+        const announcements = this.getNotificationsNumber(selectors.announcementsNotifications);
+        const events =this.getNotificationsNumber(selectors.timetableNotifications);
 
         return {
             subjects,
-            grades
+            grades,
+            user,
+            events,
+            messages,
+            announcements,
         }
     },
     getSubjects() {
@@ -36,6 +44,20 @@ const dataScraper = {
             });
         })
         return grades;
+    },
+    getUser() {
+        const rawUsername = $(dataScraper.sourcePage).find(selectors.username).parent().text();
+        return rawUsername.substring(0, rawUsername.indexOf('Klasa:'))
+            .replace('Uczeń: ', '');
+    },
+    getNotificationsNumber(selector) {
+        const notification = $(dataScraper.sourcePage)
+            .find(selector);
+        if (!notification.length) {
+            return 0;
+        }
+        const number = notification.attr('title').match(/\d/);
+        return number ? Number(number[0]) : 0;
     },
     initSelectors() {
         let gradesTable = $(dataScraper.sourcePage).find(selectors.gradesTable)

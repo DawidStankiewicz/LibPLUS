@@ -25,6 +25,10 @@ module.exports = {
         subjectNameRow: 'td:nth-child(2)',
         gradeBox: '.grade-box',
         testGrade: 'ocenaTest',
+        username: 'b:contains("Uczeń:")',
+        timetableNotifications: "a[title^='Liczba wpisów w terminarzu dodanych od ostatniego logowania:']",
+        announcementsNotifications: "a[title^='Liczba ogłoszeń dodanych od ostatniego logowania:']", //todo test it
+        messagesNotifications: "a[title^='Liczba wiadomości od ostatniego logowania:']", //todo test it
         grade: (id) => {
             return '#' + id;
         },

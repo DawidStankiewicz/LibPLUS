@@ -189,6 +189,7 @@ body {
   box-shadow: $button-shadow;
   position: relative;
   z-index: 10;
+  min-height: 1.5em;
 }
 
 .Popup__nav-items-container {
@@ -197,14 +198,13 @@ body {
 }
 
 .Popup__nav-item-wrapper {
-  width: 7em;
-
+  min-width: 6em;
 }
 
 .Popup__nav-item {
   width: 100%;
   height: 100%;
-  padding: 1.5em 1em;
+  padding: 1.5em 0em;
   color: $gray;
   text-align: center;
   display: block;
@@ -220,6 +220,20 @@ body {
   a {
     color: $gray;
     display: block;
+  }
+}
+
+.Popup__nav-item--logged-as {
+  padding: .5em;
+  font-size: .9em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: inherit;
+    color: $gray;
+    cursor: text;
   }
 }
 

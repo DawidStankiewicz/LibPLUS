@@ -8,14 +8,16 @@ const libplusController = require('./libplus-controller');
 const popupNav = 'Popup__nav';
 const menus = {
     user: 'Popup__user',
-}
+};
 
 const buttons = {
     logout: 'Popup-nav-logout',
+};
+
+const dataContainers = {
+    username: $(`.Popup__nav-username`),
 }
 
-
-// todo doing promises
 const popup = {
 
     async init() {
@@ -38,7 +40,7 @@ const popup = {
     checkIfAuthorized() {
         let promise = new Promise((resolve, reject) => {
             chrome.storage.local.get(['isAuthorized'], function (storage) {
-                const { isAuthorized } = storage;
+                const {isAuthorized} = storage;
                 if (isAuthorized) {
                     resolve(isAuthorized);
                 } else {
@@ -80,14 +82,32 @@ const popup = {
     showData(updatedData) {
         if (updatedData) {
             libplusController.initPrepared(updatedData.grades, updatedData.gpa);
+            dataContainers.username.text(updatedData.user);
+            popup.showNotifications(updatedData);
             return;
         }
-        const data = ['grades', 'gpa'];
+        const data = ['grades', 'gpa', 'user', 'events', 'announcements', 'messages'];
         chrome.storage.local.get(data, storage => {
             const {grades, gpa} = storage;
             console.log('show data: ', storage.gpa)
             libplusController.initPrepared(grades, gpa);
+            dataContainers.username.text(storage.user);
+            popup.showNotifications(storage);
         })
+    },
+    showNotifications(notifications) {
+        const {
+            messages,
+            announcements,
+            events
+        } = notifications;
+        const sum = messages + announcements + events;
+        if (sum !== 0) {
+            chrome.browserAction.setBadgeText({text: "" + sum});
+        }
+    },
+    clearNotifications() {
+        chrome.browserAction.setBadgeText({text: ""});
     },
     showNavbar() {
         $(`.${popupNav}`).slideDown(100);
@@ -103,6 +123,7 @@ const popup = {
         chrome.storage.local.clear();
         popup.hideUserMenu();
         popup.hideNavbar();
+        popup.clearNotifications();
     },
     fetchData() {
         chrome.runtime.sendMessage({
