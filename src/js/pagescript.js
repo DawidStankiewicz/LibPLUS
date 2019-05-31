@@ -5,19 +5,16 @@ const subjectController = require('./subject-controller.js');
 
 const libplus = {
     init: function () {
-        dataScraper.setSourcePage(document);
-        dataScraper.initSelectors();
-        this.subjects = dataScraper.getSubjects();
-        const grades = dataScraper.getGrades();
+        const scrapedData = dataScraper.getData(document);
         gradeParser.init(document);
-        this.grades = gradeParser.parseAll(grades);
-        sessionStorage.setItem('LIBPLUS_GRADES', JSON.stringify(this.grades));
-        sessionStorage.setItem('LIBPLUS_SUBJECTS', JSON.stringify(this.subjects));
+        const grades = gradeParser.parseAll(scrapedData.grades);
+        sessionStorage.setItem('LIBPLUS_GRADES', JSON.stringify(grades));
+        sessionStorage.setItem('LIBPLUS_SUBJECTS', JSON.stringify(scrapedData.subjects));
         subjectController.initSubjectDataContainers();
         subjectController.showSubjectsData();
         pageController.init();
     },
-}
+};
 
 module.exports = libplus;
 

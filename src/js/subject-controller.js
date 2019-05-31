@@ -30,7 +30,7 @@ const subjectController = {
                 secondTermGpa: gradeUtilities.calcGradePointAverage(secondTermGrades),
                 firstTermGradesNumber: firstTermGrades.length,
                 secondTermGradesNumber: secondTermGrades.length
-            }
+            };
             this.updateContainers(subject, data);
         })
     },
@@ -45,6 +45,6 @@ const subjectController = {
         $(`#subject-${subject.id}-gpa-term-2`).html(secondTermContainer);
         $(`#subject-${subject.id}-gpa-term-all`).html(allContainer);
     }
-}
+};
 
 module.exports = subjectController;

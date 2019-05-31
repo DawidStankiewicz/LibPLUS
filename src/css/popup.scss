@@ -6,6 +6,7 @@
 
 body {
   margin: 0;
+  font-family: 'Arial', sans-serif;
   font-size: $font-size;
   min-width: 600px;
   width: 600px;
@@ -28,10 +29,11 @@ body {
 
 .Popup__hello-logo {
   text-align: center;
-  height: 4em;
+  height: 5em;
   margin-bottom: 2em;
 
   h1 {
+    font-size: 3em;
     margin-block-start: 0;
     margin-block-end: 0;
   }
@@ -55,7 +57,7 @@ body {
   background-color: $gray;
   border-top-right-radius: 999px;
   border-bottom-right-radius: 999px;
-  box-shadow: $button-shadow;
+  box-shadow: $shadow-normal;
 
   a {
     display: block;
@@ -75,6 +77,11 @@ body {
   &:last-of-type {
     margin-bottom: 2em;
   }
+}
+
+.Popup__hello-errors {
+  color: red;
+  padding: 1em;
 }
 
 .Popup__login-form {
@@ -99,7 +106,11 @@ body {
   border: none;
   background-color: $gray;
   width: 100%;
-  box-shadow: $button-shadow;
+  box-shadow: $shadow-normal;
+
+  &:focus {
+    border-radius: 999px;
+  }
 }
 
 .Popup__input-label {
@@ -110,7 +121,11 @@ body {
 }
 
 .Popup__input--checkbox {
-  display: none;
+  display: block;
+  position: absolute;
+  height: 0;
+  width: 0;
+  opacity: 0;
 
   &:checked + .Popup__input-label--checkbox::after {
     content: "";
@@ -168,7 +183,7 @@ body {
   border: none;
   background-color: $gray;
   padding: .75em 1.5em;
-  box-shadow: $button-shadow;
+  box-shadow: $shadow-normal;
   float: right;
 }
 
@@ -186,7 +201,7 @@ body {
 
 .Popup__nav {
   background-color: $darker-gray;
-  box-shadow: $button-shadow;
+  box-shadow: $shadow-normal;
   position: relative;
   z-index: 10;
   min-height: 1.5em;

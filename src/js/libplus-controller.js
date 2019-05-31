@@ -1,10 +1,9 @@
 require('../css/libplus');
-require('../jquery/jquery-ui.min')
+require('../jquery/jquery-ui.min');
 const Mustache = require("mustache");
 const template = require("../libplus-page.html");
 const gradeUtilities = require("./grade-utils");
 const {gradeType} = require('./patterns');
-
 
 const containerId = 'Libplus';
 const activeButtonClass = 'Libplus__button--active';
@@ -45,7 +44,7 @@ const libplusController = {
         const initData = {
             leftBoxContent: gpa,
             rightBoxContent: libplusController.grades.length,
-        }
+        };
         this.initRender(initData);
         this.initButtons();
         this.initDatepickers();
@@ -70,22 +69,25 @@ const libplusController = {
         $(`.${buttons.firstTerm}`).click(this.firstTermMode);
         $(`.${buttons.secondTerm}`).click(this.secondTermMode);
         $(`.${buttons.period}`).click(this.periodMode);
-
         if (this.isAnyGradeOfType(gradeType.PROPOSED_FIRST)) {
-            $(`.${buttons.firstTermProposed}`).click(this.firstTermProposedMode);
-            $(`.${buttons.firstTermProposed}`).show();
+            const firstTermProposedButton = $(`.${buttons.firstTermProposed}`);
+            firstTermProposedButton.click(this.firstTermProposedMode);
+            firstTermProposedButton.show();
         }
         if (this.isAnyGradeOfType(gradeType.END_FISRT)) {
-            $(`.${buttons.firstTermEnd}`).click(this.firstTermEndMode);
-            $(`.${buttons.firstTermEnd}`).show();
+            const firstTermEndButton = $(`.${buttons.firstTermEnd}`);
+            firstTermEndButton.click(this.firstTermEndMode);
+            firstTermEndButton.show();
         }
         if (this.isAnyGradeOfType(gradeType.PROPOSED_SECOND)) {
-            $(`.${buttons.secondTermProposed}`).click(this.secondTermProposedMode);
-            $(`.${buttons.secondTermProposed}`).show();
+            const secondTermProposedButton = $(`.${buttons.secondTermProposed}`);
+            secondTermProposedButton.click(this.secondTermProposedMode);
+            secondTermProposedButton.show();
         }
         if (this.isAnyGradeOfType(gradeType.END_SECOND)) {
-            $(`.${buttons.secondTermEnd}`).click(this.secondTermEndMode);
-            $(`.${buttons.secondTermEnd}`).show();
+            const secondTermEndButton = $(`.${buttons.secondTermEnd}`);
+            secondTermEndButton.click(this.secondTermEndMode);
+            secondTermEndButton.show();
         }
     },
     initDatepickers: function () {
@@ -100,16 +102,18 @@ const libplusController = {
             maxDate,
             changeMonth: true,
         };
-        $("#Libplus-date-form").val(savedDateFrom);
-        $("#Libplus-date-form").datepicker({
+        const libplusDateForm = $("#Libplus-date-form");
+        const libplusDateTo = $("#Libplus-date-to");
+        libplusDateForm.val(savedDateFrom);
+        libplusDateForm.datepicker({
             ...options,
             onSelect: libplusController.firstDateSelected
         });
         if (savedDateTo) {
-            $("#Libplus-date-to").val(savedDateTo);
-            $("#Libplus-date-to").prop('disabled', false);
+            libplusDateTo.val(savedDateTo);
+            libplusDateTo.prop('disabled', false);
         }
-        $("#Libplus-date-to").datepicker({
+        libplusDateTo.datepicker({
             ...options,
             minDate: savedDateFrom ? savedDateFrom : options.minDate,
             onSelect: libplusController.secondDateSelected
@@ -121,11 +125,13 @@ const libplusController = {
         console.log('rendered template');
     },
     updateContent: function (data) {
+        const leftBoxContentContainer = $(`.${content.leftBoxContent}`);
+        const rightBoxContentContainer = $(`.${content.rightBoxContent}`);
         const initState = {
-            leftBoxContent: $(`.${content.leftBoxContent}`).text(),
-            rightBoxContent: $(`.${content.rightBoxContent}`).text()
+            leftBoxContent: leftBoxContentContainer.text(),
+            rightBoxContent: rightBoxContentContainer.text()
         };
-        $(`.${content.leftBoxContent}`).prop('value', initState.leftBoxContent).animate({
+        leftBoxContentContainer.prop('value', initState.leftBoxContent).animate({
             value: data.leftBoxContent
         }, {
             duration: 500,
@@ -134,7 +140,7 @@ const libplusController = {
                 $(this).text((Math.ceil(now * 100) / 100).toFixed(2));
             }
         });
-        $(`.${content.rightBoxContent}`).prop('value', initState.rightBoxContent).animate({
+        rightBoxContentContainer.prop('value', initState.rightBoxContent).animate({
             value: data.rightBoxContent
         }, {
             duration: 500,
@@ -145,7 +151,7 @@ const libplusController = {
         });
     },
     toggleButton: function (button) {
-        for (index in buttons) {
+        for (let index in buttons) {
             if (buttons[index] === button) {
                 $(`.${button}`).addClass(activeButtonClass);
             } else {
@@ -154,7 +160,7 @@ const libplusController = {
         }
     },
     toggleMenu: function (menu) {
-        for (index in menus) {
+        for (let index in menus) {
             if (menus[index] === menu) {
                 $(`.${menu}`).slideDown();
             } else {
@@ -173,23 +179,23 @@ const libplusController = {
     },
     firstTermMode: function () {
         const term = 1;
-        const termGrades = libplusController.grades.filter(grade => grade.term == term);
+        const termGrades = libplusController.grades.filter(grade => grade.term === term);
         const gpa = gradeUtilities.calcGradePointAverage(termGrades);
         libplusController.updateContent({
             leftBoxContent: gpa,
             rightBoxContent: termGrades.length,
-        })
+        });
         libplusController.toggleButton(buttons.firstTerm);
         libplusController.toggleMenu(menus.firstTerm);
     },
     secondTermMode: function () {
         const term = 2;
-        const termGrades = libplusController.grades.filter(grade => grade.term == term);
+        const termGrades = libplusController.grades.filter(grade => grade.term === term);
         const gpa = gradeUtilities.calcGradePointAverage(termGrades);
         libplusController.updateContent({
             leftBoxContent: gpa,
             rightBoxContent: termGrades.length,
-        })
+        });
         libplusController.toggleButton(buttons.secondTerm);
         libplusController.toggleMenu(menus.secondTerm);
     },
@@ -209,7 +215,7 @@ const libplusController = {
         libplusController.updateContent({
             leftBoxContent: gpa,
             rightBoxContent: proposedGrades.length
-        })
+        });
     },
     firstTermEndMode: function () {
         libplusController.toggleButton(buttons.firstTermEnd);
@@ -258,10 +264,11 @@ const libplusController = {
         sessionStorage.setItem(sessionStorageKeys.dateFrom, date);
         const minDate = new Date(date);
         const maxDate = libplusController.getMaxDate();
-        $("#Libplus-date-to").prop("disabled", false);
-        $("#Libplus-date-to").datepicker("setDate", null);
-        $("#Libplus-date-to").datepicker("destroy");
-        $("#Libplus-date-to").datepicker({
+        const libplusDateTo = $("#Libplus-date-to");
+        libplusDateTo.prop("disabled", false);
+        libplusDateTo.datepicker("setDate", null);
+        libplusDateTo.datepicker("destroy");
+        libplusDateTo.datepicker({
             dateFormat: 'yy-mm-dd',
             minDate,
             maxDate,
@@ -306,6 +313,6 @@ const libplusController = {
     isAnyGradeOfType: function (type) {
         return libplusController.grades.filter(grade => grade.type === type).length >= 1;
     }
-}
+};
 
 module.exports = libplusController;

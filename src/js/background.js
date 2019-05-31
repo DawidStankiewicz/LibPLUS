@@ -6,10 +6,9 @@ const gradeUtilities = require('./grade-utils');
 const axios = require('axios');
 
 let updatesInterval;
-const updatesIntervalTime = 15 * 60 * 1000; // 15 min todo fix to 60
+const updatesIntervalTime = 60 * 60 * 1000; // 60 min
 
 const backgroundService = {
-
     async init() {
         this.checkUpdates()
             .then(() => {
@@ -19,12 +18,11 @@ const backgroundService = {
                 backgroundService.onCheckUpdatesFailed(reason);
             });
     },
-
     checkUpdates() {
         return this.isAuthorized()
             .then((authorized) => {
                 if (!authorized) {
-                    console.log('[LibPlus] Reject check updates because of unauthorized !!!');
+                    console.log('[LibPlus] Unauthorized !!! Reject check updates');
                     return Promise.reject('unauthorized');
                 }
                 return authorized;
@@ -36,28 +34,23 @@ const backgroundService = {
                 }
             })
             .then((authorized) => {
-                console.log(`[LibPlus] is authorized before fetch updates ? ${authorized}`);
                 if (!authorized) {
                     return Promise.reject('unauthorized');
                 }
                 return backgroundService.fetchUpdates()
             });
     },
-
-
     wakeUp() {
-        console.log(`[LibPlus] wake up (${new Date().toISOString()})`);
+        console.log(`[LibPlus] checking updates... (${new Date().toISOString()})`);
 
         backgroundService.checkUpdates()
             .catch(backgroundService.onCheckUpdatesFailed);
     },
-
     initIntervals() {
         updatesInterval = setInterval(() => {
             backgroundService.wakeUp();
         }, updatesIntervalTime);
     },
-
     onCheckUpdatesFailed(reason) {
         if (reason === 'unauthorized') {
             console.log(`[LibPlus] User is unauthorized - background is snoozed!`);
@@ -66,10 +59,8 @@ const backgroundService = {
             throw Error(reason);
         }
     },
-
     autologin() {
         const data = ['isAutologin', 'login', 'pass'];
-
         let promise = new Promise(((resolve, reject) => {
             chrome.storage.local.get(data, storage => {
                 let err = chrome.runtime.lastError;
@@ -89,13 +80,10 @@ const backgroundService = {
             console.log(`[LibPlus] autologin failed`);
             return false;
         });
-
         return promise;
     },
-
     fetchDataPage() {
         const dataURL = 'https://synergia.librus.pl/przegladaj_oceny/uczen';
-
         return axios.get(dataURL)
             .then(response => {
                 // todo clear from useless things (images, scripts etc.)
@@ -106,7 +94,6 @@ const backgroundService = {
                 return $(response.data);
             });
     },
-
     fetchUpdates() {
         console.log('fetching updates ...');
         backgroundService.fetchDataPage()
@@ -124,7 +111,6 @@ const backgroundService = {
                     user: scrapedData.user,
                     lastUpdateTime: new Date().getTime(),
                 };
-
                 return updatedData;
             })
             .catch(reason => {
@@ -145,10 +131,8 @@ const backgroundService = {
             });
         });
     },
-
     compareVersions(updatedData) {
         const storedData = ['grades'];
-
         let promise = new Promise(((resolve, reject) => {
             chrome.storage.local.get(storedData, storage => {
                 let err = chrome.runtime.lastError;
@@ -176,7 +160,6 @@ const backgroundService = {
 
         return promise;
     },
-
     authorize(authData) {
         const {
             login,
@@ -197,22 +180,17 @@ const backgroundService = {
                 });
                 return authorized;
             }, e => {
-                if (e.message === 'failed') {
-                    chrome.runtime.sendMessage({
-                        method: 'loginFailed', data: {
-                            errors: e,
-                        }
-                    });
-                } else {
-                    console.error(e);
-                }
+                chrome.runtime.sendMessage({
+                    method: 'loginFailed', data: {
+                        errors: e,
+                    }
+                });
                 return false;
             })
             .then(isAuthorized => {
                 chrome.storage.local.set({isAuthorized});
             });
     },
-
     isAuthorized() {
         let promise = new Promise(((resolve, reject) => {
             const data = ['isAuthorized', 'lastUpdateTime']
@@ -241,7 +219,6 @@ const backgroundService = {
 
         return promise;
     },
-
     onUnauthorized() {
         console.log('unauthorized called');
         chrome.storage.local.set({
@@ -261,7 +238,6 @@ chrome.runtime.onMessage.addListener((request) => {
     }
     return true;
 });
-
 
 chrome.runtime.onInstalled.addListener(() => {
     backgroundService.init();

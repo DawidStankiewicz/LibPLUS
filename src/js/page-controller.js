@@ -9,10 +9,8 @@ const pageController = {
         const container = `<div class="${containerWrapperClass}"><div id="${containerId}"></div></div>`;
         const containerNeighbour = $('#grades').siblings().closest('h3.center');
         $(container).insertBefore(containerNeighbour);
-
         libplusController.init();
     }
-}
-
+};
 
 module.exports = pageController;

@@ -10,7 +10,7 @@ module.exports = {
         pagescript: './src/js/pagescript.js',
         popup: './src/js/popup.js',
         background: './src/js/background.js',
-        options: './src/js/options.js',
+        // options: './src/js/options.js',
     },
     output: {
         filename: '[name].js',

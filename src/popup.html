@@ -1,11 +1,10 @@
 <!doctype html>
-<html>
+<html lang="pl">
 <head>
     <title>LibPLUS</title>
     <meta charset="UTF-8">
 </head>
 <body>
-
 <nav
         class="Popup__nav"
         style="display: none"
@@ -43,9 +42,7 @@
         </div>
     </div>
 </nav>
-
 <div class="Popup__container">
-
     <div class="Popup__hello">
         <div class="Popup__hello-menu">
             <div class="Popup__hello-logo">
@@ -62,25 +59,28 @@
                         id="Popup-hello-librus"
                         rel="noopener"
                 >dziennik</a></div>
-                <div class="Popup__hello-menu-item"><a
-                        href="options.html"
+<!--                <div class="Popup__hello-menu-item"><a-->
+<!--                        href="options.html"-->
+<!--                        target="_blank"-->
+<!--                        class="Popup__ga-item"-->
+<!--                        id="Popup-hello-options"-->
+<!--                        rel="noopener"-->
+<!--                >opcje</a></div>-->
+                <div class="Popup__hello-menu-item"
+                title="Zauważyłeś błąd? Chcesz coś zasugerować? Skontaktuj się ze mną!"><a
+                        href="https://github.com/DawidStankiewicz/LibPLUS#kontakt"
                         target="_blank"
                         class="Popup__ga-item"
-                        id="Popup-hello-options"
+                        id="Popup-hello-contact"
                         rel="noopener"
-                >opcje</a></div>
-                <div class="Popup__hello-menu-item"><a
-                        href="#"
-                        target="_blank"
-                        class="Popup__ga-item"
-                        id="Popup-hello-reports"
-                        rel="noopener"
-                >zgłaszanie błędów</a></div>
+                >kontakt</a></div>
             </nav>
         </div>
         <form id="loginForm" class="Popup__login-form" action="#" autocomplete="on">
             <div class="Popup__input-container">
-
+                <div class="Popup__hello-errors" style="display:none;">
+                    Logowanie nie powiodło się!
+                </div>
                 <div
                         class="Popup__input-wrapper"
                         title="Podaj login, którym logujesz się do dziennika"
@@ -97,9 +97,9 @@
                             type="text"
                             required
                             autocomplete="username login"
+                            autofocus
                     >
                 </div>
-
                 <div
                         class="Popup__input-wrapper"
                         title="Podaj hasło, którym logujesz się do dziennika"
@@ -117,7 +117,6 @@
                             autocomplete="password"
                     >
                 </div>
-
                 <div
                         class="Popup__input-wrapper"
                         title="Dane logowania będą przechowywane w pamięci przeglądarki na tym urządzeniu"
@@ -135,7 +134,6 @@
                         Automatyczne logowanie
                     </label>
                 </div>
-
                 <div class="Popup__input-wrapper">
                     <button
                             id="login-button"
@@ -156,12 +154,11 @@
                     <p>Zaznaczenie opcji automatycznego logowania zapisze login i hasło
                         w pamięci przeglądarki na tym urządzeniu.
                         Rozszerzenie będzie się automatycznie łączyło z dziennikiem,
-                        aby pobrać i wyświetlić aktualne dane. </p>
+                        aby pobrać i wyświetlić aktualne dane.</p>
                 </div>
             </div>
         </form>
     </div>
-
     <div class="Popup__user" style="display: none;">
         <div id="Libplus"></div>
     </div>

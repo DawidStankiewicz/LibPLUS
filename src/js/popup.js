@@ -15,11 +15,12 @@ const buttons = {
 
 const dataContainers = {
     username: $(`.Popup__nav-username`),
-}
+    errors: $(`.Popup__hello-errors`)
+};
 
 const popup = {
-
     async init() {
+        popupHelloController.initForm();
         document.querySelector('.Popup__version').innerText = `v${appVersion}`;
         this.initButtons();
         this.checkIfAuthorized()
@@ -35,25 +36,6 @@ const popup = {
                 }
             });
     },
-
-    checkIfAuthorized() {
-        let promise = new Promise((resolve, reject) => {
-            chrome.storage.local.get(['isAuthorized'], function (storage) {
-                const {isAuthorized} = storage;
-                if (isAuthorized) {
-                    resolve(isAuthorized);
-                } else {
-                    reject(Error('unauthorized'));
-                }
-            })
-        });
-
-        return promise;
-    },
-    trackButtonClick(e) {
-        const id = e.target.id;
-        _gaq.push(['_trackEvent', id, 'clicked', appVersion]);
-    },
     initButtons() {
         const gaButtons = document.querySelectorAll('.Libplus__ga-item');
         for (let i = 0; i < gaButtons.length; i++) {
@@ -63,15 +45,29 @@ const popup = {
             popup.logout();
         });
     },
+    checkIfAuthorized() {
+        return new Promise((resolve, reject) => {
+            chrome.storage.local.get(['isAuthorized'], function (storage) {
+                const {isAuthorized} = storage;
+                if (isAuthorized) {
+                    resolve(isAuthorized);
+                } else {
+                    reject(Error('unauthorized'));
+                }
+            })
+        });
+    },
     onLoginSuccess() {
         console.log('[LibPlus] login success!');
+        dataContainers.errors.hide();
         popupHelloController.hideHelloMenu();
         popup.showNavbar();
         this.fetchData();
     },
     onLoginFailed(e) {
+        dataContainers.errors.show();
         console.log('[LibPlus] login failed!');
-        popupHelloController.onLoginFailed(e);
+        console.error(e);
     },
     showUserMenu() {
         popupHelloController.hideHelloMenu();
@@ -132,8 +128,12 @@ const popup = {
     onDataUpdated(data) {
         popup.showData(data);
         $(`.${menus.user}`).fadeIn(0);
-    }
-}
+    },
+    trackButtonClick(e) {
+        const id = e.target.id;
+        _gaq.push(['_trackEvent', id, 'clicked', appVersion]);
+    },
+};
 
 chrome.runtime.onMessage.addListener(function (request) {
     switch (request.method) {

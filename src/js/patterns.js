@@ -49,4 +49,4 @@ module.exports = {
         NP: 'NP',
         NORMAL: 'NORMAL'
     }
-}
+};

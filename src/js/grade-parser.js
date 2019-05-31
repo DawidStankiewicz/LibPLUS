@@ -8,38 +8,35 @@ const {
 } = require('./patterns.js');
 
 const gradeParser = {
-    init: function(sourcePage) {
+    init: function (sourcePage) {
         this.sourcePage = sourcePage;
     },
     parseAll: function (grades) {
         let parsed = [];
         grades.forEach(grade => {
             parsed.push(this.parse(grade));
-        })
+        });
         return parsed;
     },
     parse: function (grade) {
         const {id, html} = grade;
         for (let property in gradeProperties) {
-            grade[property] = this.parseValueFromRaw(html, gradeProperties[property]);
+            grade[property] = this.parseValueFromRawHTML(html, gradeProperties[property]);
         }
         const term = this.parseGradeTerm(id);
         const subject = this.parseGradeSubject(id);
         const type = this.getGradeType(grade.category, grade.rawValue);
         const val = this.parseGradeValFromRawVal(grade.rawValue, type);
-
-        const parsedGrade = {
+        return {
             term,
             subject,
             type,
             val,
             ...grade
-        }
-        return parsedGrade;
+        };
     },
-    parseValueFromRaw: function (html, regex) {
+    parseValueFromRawHTML: function (html, regex) {
         let matcher = html.match(regex);
-
         return matcher ? matcher[1] : undefined;
     },
     parseGradeValFromRawVal: function (rawValue, type) {
@@ -85,7 +82,7 @@ const gradeParser = {
     parseGradeTerm: function (id) {
         const grade = $(this.sourcePage).find(selectors.grade(gradeId(id)));
         if (!grade.length) {
-            return 0; //todo throw error
+            throw new Error('[grade-parser] grade not found!');
         }
         const cellIndex = grade.parents().closest('td')[0].cellIndex;
         switch (cellIndex) {
@@ -103,12 +100,12 @@ const gradeParser = {
     parseGradeSubject: function (id) {
         const grade = $(this.sourcePage).find(selectors.grade(gradeId(id)));
         if (!grade.length) {
-            return; //todo throw error
+            throw new Error('[grade-parser] grade not found!');
         }
         const parentId = grade.parents().closest('tr')[0].id;
         const subjectId = parentId.split('-')[1];
         return {id: subjectId};
     }
-}
+};
 
 module.exports = gradeParser;

@@ -37,7 +37,7 @@
   padding: 0 2em 2em 2em;
   border-radius: $border-radius;
   color: $fg-b;
-  box-shadow: 0 4px 8px 0px #00000042;
+  box-shadow: $libplus-box-shadow;
   transition: all .4s;
 
   &:hover .Libplus__box-content {
@@ -68,7 +68,6 @@
   text-align: center;
   font-weight: bolder;
   font-size: 4em;
-  font-family: 'Arial black', sans-serif;
 }
 
 .Libplus__button-container {

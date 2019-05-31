@@ -4,21 +4,13 @@ const dataScraper = {
     getData(sourcePage) {
         dataScraper.sourcePage = sourcePage;
         dataScraper.initSelectors();
-
-        const subjects = this.getSubjects();
-        const grades = this.getGrades();
-        const user = this.getUser();
-        const messages = this.getNotificationsNumber(selectors.messagesNotifications);
-        const announcements = this.getNotificationsNumber(selectors.announcementsNotifications);
-        const events =this.getNotificationsNumber(selectors.timetableNotifications);
-
         return {
-            subjects,
-            grades,
-            user,
-            events,
-            messages,
-            announcements,
+            subjects: dataScraper.getSubjects(),
+            grades: dataScraper.getGrades(),
+            user: dataScraper.getUser(),
+            events: dataScraper.getNotificationsNumber(selectors.timetableNotifications),
+            messages: dataScraper.getNotificationsNumber(selectors.messagesNotifications),
+            announcements: dataScraper.getNotificationsNumber(selectors.announcementsNotifications),
         }
     },
     getSubjects() {
@@ -30,7 +22,7 @@ const dataScraper = {
                 id,
                 name: rawName.innerText,
             })
-        })
+        });
         return subjects;
     },
     getGrades() {
@@ -43,7 +35,7 @@ const dataScraper = {
                 id,
                 html: raw.innerHTML
             });
-        })
+        });
         return grades;
     },
     getUser() {
@@ -66,12 +58,9 @@ const dataScraper = {
         if (gradesTable) {
             gradesTable.id = 'grades';
         } else {
-            throw new Error('table not found!');
+            throw new Error('[data-scraper] table not found!');
         }
     },
-    setSourcePage(sourcePage) {
-        this.sourcePage = sourcePage;
-    }
-}
+};
 
 module.exports = dataScraper;

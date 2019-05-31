@@ -8,8 +8,8 @@ const gradeUtils = {
             const val = grade.val ? Number(grade.val) : 0;
             sum += val * weight;
             weightSum += weight;
-        })
-        if (weightSum == 0) return 0;
+        });
+        if (weightSum === 0) return 0;
         return (sum / weightSum).toFixed(2);
     },
     getGradesFromPeriod: function (grades, from, to) {
@@ -29,6 +29,6 @@ const gradeUtils = {
         });
         return gradeUtils.calcGradePointAverage(fixedWeight);
     }
-}
+};
 
 module.exports = gradeUtils;

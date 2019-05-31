@@ -13,6 +13,5 @@ module.exports = {
             _gaq.push(['_trackPageview']);
             console.log('GA started')
         }
-
     }
-}
+};

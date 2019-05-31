@@ -1,25 +1,32 @@
-# LibPLUS
-Rozszerzenie do przeglądarki Google Chrome pozwalające wyświetlić średnią ucznia w systemie Librus, nawet jeżeli podgląd został wyłączony przez administrację.
+# LibPlus
+Rozszerzenie do przeglądarki pozwalające wyświetlić średnią ucznia w systemie Librus, nawet jeżeli podgląd został wyłączony przez administrację.
 
-## Obecne funkcje (v3.0)
-- podgląd średniej ważonej ucznia
-- podgląd średniej ważonej z każdego przedmiotu (I semestr, II semestr, całoroczna) 
-- podgląd średniej z ocen śródrocznych, przewidywanych rocznych i rocznych
-- licznik ocen ucznia
-- eksport ocen do Excela
-- wyświetlanie ocen i średniej z wybranego okresu
+// todo zrzuty ekranu
+
 
 ## Instalacja
-Instalacja rozszerzenia LibPLUS w Google Chrome jest bardzo prosta.
+
+### Google Chrome
+Instalacja rozszerzenia LibPlus w Google Chrome jest bardzo prosta.
 
 1. Przejdź do https://goo.gl/tOqmg2
-2. Kliknij "DODAJ DO CHROME"
+2. Kliknij przycisk "DODAJ DO CHROME"
 
 Gotowe. 
 
+### Opera
+// todo
 
-## Eksport ocen do Excela
-W wersji 3.0 funkcja eksportu ocen została usunięta.
+### Mozilla Firefox
+// todo
+
+## Obecne funkcje (v3.0)
+- podgląd średniej ze wszystkich ocen
+- podgląd średniej z każdego przedmiotu (I semestr, II semestr, całoroczna) 
+- podgląd średniej z ocen proponowanych i śródrocznych
+- podgląd średniej z wybranego okresu
+- licznik ocen ucznia
+
 
 ## Demo - konto testowe
 Po instalacji rozszerzenie można przetestować logując się na konto testowe [portal.librus.pl](https://portal.librus.pl/rodzina/synergia/loguj)
@@ -27,15 +34,30 @@ Po instalacji rozszerzenie można przetestować logując się na konto testowe [
 - login: `demorodzic` lub `13335` 
 - hasło: `librus11`
 
+## Kontakt
+Sugestie, błędy, oferty współpracy czy pytania: 
+ - [Messenger](https://m.me/StankiewiczDawid)
+ - email: dawid.stanki[at]gmail.com
+
 ## Zgłaszanie błędów
  Wszelkie błędy można zgłaszać poprzez:
- - [zakładkę 'Issues' na Githubie](https://github.com/DawidStankiewicz/LibPLUS/issues)
+ - [zakładkę 'Issues' na Githubie](https://github.com/DawidStankiewicz/LibPlus/issues)
  - [sklep Google Store](https://chrome.google.com/webstore/detail/libplus-podgl%C4%85d-%C5%9Bredniej/logdgpobdggdjliepjjfmnggmbpohmka/support?hl=pl&gl=PL)
  - [Messengera](https://m.me/StankiewiczDawid)
 
+## Eksport ocen do Excela
+W wersji 3.0 funkcja eksportu ocen została usunięta.
+
 ## Zmiany:
 
-### v3.0.0
+### v3.0.0 (31.05.2019)
+- przepisanie kodu z użyciem Node.js oraz Webpacka
+- nowy prosty interfejs na stronie oraz w menu popup
+- odświeżenie menu popup
+- dodanie podglądu średniej w menu popup (oraz panelu logowania)
+- dodanie funkcji automatycznego logowania (storage bez szyfrowania)
+- dodanie skryptów GA
+- pobieranie danych z serwera co 60 minut
 
 ### v2.2.1 (06.06.2017)
 - naprawione liczenie średniej z ocen rocznych
