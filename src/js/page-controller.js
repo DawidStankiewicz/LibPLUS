@@ -1,5 +1,4 @@
 require('../css/libplus-page');
-const $ = require("jquery");
 const libplusController = require('./libplus-controller');
 
 const containerId = 'Libplus';

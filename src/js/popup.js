@@ -1,6 +1,5 @@
 require("./analytics").init();
 require("../css/popup.scss");
-const $ = require("jquery");
 const appVersion = chrome.runtime.getManifest().version;
 const popupHelloController = require('./popup-hello-controller');
 const libplusController = require('./libplus-controller');

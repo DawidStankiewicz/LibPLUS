@@ -1,4 +1,3 @@
-const $ = require("jquery");
 const {gradeId, selectors} = require('./patterns.js');
 
 const dataScraper = {
@@ -36,7 +35,9 @@ const dataScraper = {
     },
     getGrades() {
         let grades = [];
-        $(this.sourcePage).find(selectors.gradeBox).toArray().filter((raw, id) => id != 0).forEach((raw, id) => {
+        $(this.sourcePage).find(selectors.gradeBox).toArray()
+            .filter((raw, id) => id !== 0)
+            .forEach((raw, id) => {
             raw.id = gradeId(id);
             grades.push({
                 id,

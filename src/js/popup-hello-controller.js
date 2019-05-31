@@ -1,6 +1,3 @@
-const $ = require("jquery");
-
-
 const form = {
     login: 'login',
     pass: 'pass',

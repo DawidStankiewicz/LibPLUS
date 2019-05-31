@@ -1,6 +1,5 @@
 require('../css/libplus');
 require('../jquery/jquery-ui.min')
-const $ = require("jquery");
 const Mustache = require("mustache");
 const template = require("../libplus-page.html");
 const gradeUtilities = require("./grade-utils");

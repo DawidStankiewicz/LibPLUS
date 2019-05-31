@@ -1,4 +1,3 @@
-const $ = require("jquery");
 const gradeUtilities = require("./grade-utils");
 
 let subjects;

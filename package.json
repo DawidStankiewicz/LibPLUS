@@ -4,10 +4,9 @@
   "description": "Browser extension for Librus.pl",
   "private": true,
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --config webpack.prod.js",
+    "start:webpack-dev-server": "webpack-dev-server --config './webpack.dev.js'",
     "start:webserver": "node webserver.js",
-    "start:webpack-dev-server": "webpack-dev-server --config './webpack.config.js'",
-    "start:webpack-extension-server": "webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,8 +14,11 @@
     "url": "git+https://github.com/DawidStankiewicz/LibPLUS.git"
   },
   "keywords": [
+    "libplus",
+    "librus",
     "browser",
     "extension",
+    "addon",
     "chrome",
     "js"
   ],
@@ -41,6 +43,7 @@
     "webpack-chrome-extension-reloader": "^1.3.0",
     "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.3.1",
+    "webpack-merge": "^4.2.1",
     "write-file-webpack-plugin": "^4.5.0"
   },
   "dependencies": {

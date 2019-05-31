@@ -3,14 +3,14 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const WriteFilePlugin = require("write-file-webpack-plugin");
 
-const options = {
+module.exports = {
     mode: 'development',
     entry: {
         pagescript: './src/js/pagescript.js',
         popup: './src/js/popup.js',
         background: './src/js/background.js',
+        options: './src/js/options.js',
     },
     output: {
         filename: '[name].js',
@@ -18,13 +18,6 @@ const options = {
     },
     resolve: {
         extensions: ['.js', '.css', '.scss', '.json']
-    },
-    devServer: {
-        contentBase: './src',
-        hot: true,
-        port: 3001,
-        disableHostCheck: true,
-        writeToDisk: true,
     },
     module: {
         rules: [
@@ -47,13 +40,23 @@ const options = {
             }
         ],
     },
+    optimization: {
+      splitChunks: {
+          chunks: "all",
+          cacheGroups: {
+              commons: {
+                  name: 'commons',
+                  chunks: 'initial',
+                  minChunks: 2
+              }
+          }
+      }
+    },
     plugins: [
         new CleanWebpackPlugin({
             cleanStaleWebpackAssets: false,
         }),
         new webpack.EnvironmentPlugin({
-            NODE_ENV: 'development',
-            PORT: '3001',
             GA_TRACKING_ID: 'UA-138677716-1',
         }),
         new CopyWebpackPlugin([{
@@ -69,6 +72,10 @@ const options = {
             from: 'src/icon', to: 'icon',
         }
         ]),
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery'
+        }),
         new HtmlWebpackPlugin({
             template: path.join(__dirname, "src", "popup.html"),
             filename: "popup.html",
@@ -80,17 +87,14 @@ const options = {
             chunks: ["libplus-page"]
         }),
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, "src", "background.ejs"),
+            template: path.join(__dirname, "src", "background.html"),
             filename: "background.html",
-            chunks: ["background", "libplus-page"]
+            chunks: ["background"]
         }),
-        new webpack.HotModuleReplacementPlugin(),
-        new WriteFilePlugin(),
+        new HtmlWebpackPlugin({
+            template: path.join(__dirname, "src", "options.html"),
+            filename: "options.html",
+            chunks: ["options"]
+        }),
     ],
 };
-
-if (process.env.NODE_ENV === "development") {
-    options.devtool = "cheap-module-eval-source-map";
-}
-
-module.exports = options;

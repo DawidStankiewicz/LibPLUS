@@ -1,6 +1,7 @@
 module.exports = {
     gradeProperties: {
         rawValue: /(?:<a.+>)(.*?)(?:<\/a>)/,
+        // rawValue: /(?:<a(.[\r\n]?)+>)(.*?)(?:<\/a>)/,
         category: /(?:Kategoria: )(.*?)(?:<br>)/,
         date: /(?:Data: )(.*?)(?: \(.+\)<br>)/,
         teacher: /(?:Nauczyciel: )(.*?)(?:<br>)/,
@@ -27,8 +28,10 @@ module.exports = {
         testGrade: 'ocenaTest',
         username: 'b:contains("Uczeń:")',
         timetableNotifications: "a[title^='Liczba wpisów w terminarzu dodanych od ostatniego logowania:']",
-        announcementsNotifications: "a[title^='Liczba ogłoszeń dodanych od ostatniego logowania:']", //todo test it
+        announcementsNotifications: "a[title^='Liczba nieprzeczytanych ogłoszeń:']",
         messagesNotifications: "a[title^='Liczba wiadomości od ostatniego logowania:']", //todo test it
+        gradesNotifications: "a[title^='Liczba ocen dodanych od ostatniego logowania:']", //todo test it
+        absenceNotifications: "a[title^='Liczba nieobecności dodanych od ostatniego logowania:']",
         grade: (id) => {
             return '#' + id;
         },

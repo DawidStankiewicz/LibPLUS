@@ -1,4 +1,3 @@
-const $ = require("jquery");
 const {
     gradeProperties,
     gradesRawValue,
@@ -84,7 +83,11 @@ const gradeParser = {
         return gradeType.NORMAL;
     },
     parseGradeTerm: function (id) {
-        const cellIndex = $(this.sourcePage).find(selectors.grade(gradeId(id))).parents().closest('td')[0].cellIndex;
+        const grade = $(this.sourcePage).find(selectors.grade(gradeId(id)));
+        if (!grade.length) {
+            return 0; //todo throw error
+        }
+        const cellIndex = grade.parents().closest('td')[0].cellIndex;
         switch (cellIndex) {
             case 2:
             case 4:
@@ -98,7 +101,11 @@ const gradeParser = {
         return 0;
     },
     parseGradeSubject: function (id) {
-        const parentId = $(this.sourcePage).find(selectors.grade(gradeId(id))).parents().closest('tr')[0].id;
+        const grade = $(this.sourcePage).find(selectors.grade(gradeId(id)));
+        if (!grade.length) {
+            return; //todo throw error
+        }
+        const parentId = grade.parents().closest('tr')[0].id;
         const subjectId = parentId.split('-')[1];
         return {id: subjectId};
     }

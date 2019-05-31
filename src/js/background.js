@@ -1,5 +1,4 @@
 require('../css/libplus');
-const $ = require("jquery");
 const authorizationService = require('./authorization-service');
 const dataScraper = require('./data-scraper');
 const gradeParser = require('./grade-parser.js');
