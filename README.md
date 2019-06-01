@@ -1,24 +1,25 @@
 # LibPlus
 Rozszerzenie do przeglądarki pozwalające wyświetlić średnią ucznia w systemie Librus, nawet jeżeli podgląd został wyłączony przez administrację.
 
-// todo zrzuty ekranu
-
+![podgląd](https://addons.cdn.mozilla.net/user-media/previews/thumbs/220/220155.png?modified=1559398387)
 
 ## Instalacja
+Instalacja rozszerzenia LibPlus w przeglądarce jest bardzo prosta.
 
 ### Google Chrome
-Instalacja rozszerzenia LibPlus w Google Chrome jest bardzo prosta.
 
 1. Przejdź do https://goo.gl/tOqmg2
 2. Kliknij przycisk "DODAJ DO CHROME"
+3. Potwierdź wymagane uprawnienia
 
 Gotowe. 
 
-### Opera
-// todo
-
 ### Mozilla Firefox
-// todo
+1. Przejdź do https://addons.mozilla.org/pl/firefox/addon/libplus-srednia-na-librusie/
+2. Kliknij przycisk "Dodaj do Firefoxa" 
+3. Potwierdź wymagane uprawnienia
+
+Gotowe.
 
 ## Obecne funkcje (v3.0)
 - podgląd średniej ze wszystkich ocen
