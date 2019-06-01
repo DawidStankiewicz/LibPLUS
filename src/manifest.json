@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "content_security_policy": "script-src 'self' 'unsafe-eval' https://api.librus.pl/ https://ssl.google-analytics.com/ https://www.googletagmanager.com/; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://librus.pl/ https://ssl.google-analytics.com/ https://www.googletagmanager.com/; object-src 'self'",
   "name": "LibPlus - rozszerzenie do Librusa",
   "description": "Szybki podgląd średniej oraz inne funkcje w dzienniku Librus",
   "author": "Dawid Stankiewicz",

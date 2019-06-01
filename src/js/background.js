@@ -61,7 +61,7 @@ const backgroundService = {
     },
     autologin() {
         const data = ['isAutologin', 'login', 'pass'];
-        let promise = new Promise(((resolve, reject) => {
+        return new Promise(((resolve, reject) => {
             chrome.storage.local.get(data, storage => {
                 let err = chrome.runtime.lastError;
                 if (err) {
@@ -80,7 +80,6 @@ const backgroundService = {
             console.log(`[LibPlus] autologin failed`);
             return false;
         });
-        return promise;
     },
     fetchDataPage() {
         const dataURL = 'https://synergia.librus.pl/przegladaj_oceny/uczen';
@@ -95,14 +94,14 @@ const backgroundService = {
             });
     },
     fetchUpdates() {
-        console.log('fetching updates ...');
+        console.log('[LibPlus] Fetching updates...');
         backgroundService.fetchDataPage()
             .then(page => {
                 const scrapedData = dataScraper.getData(page);
                 gradeParser.init(page);
                 const grades = gradeParser.parseAll(scrapedData.grades);
                 const gpa = gradeUtilities.calcGradePointAverage(grades);
-                const updatedData = {
+                return {
                     grades,
                     gpa,
                     announcements: scrapedData.announcements,
@@ -111,7 +110,6 @@ const backgroundService = {
                     user: scrapedData.user,
                     lastUpdateTime: new Date().getTime(),
                 };
-                return updatedData;
             })
             .catch(reason => {
                 if (reason.message === 'unauthorized') {
@@ -123,7 +121,6 @@ const backgroundService = {
                 return backgroundService.compareVersions(updatedData);
             }).then(updatedData => {
             chrome.storage.local.set(updatedData);
-            console.log('[LibPlus] updated data: ', updatedData);
             chrome.runtime.sendMessage({
                 method: 'onDataUpdated', data: {
                     updatedData
@@ -133,7 +130,7 @@ const backgroundService = {
     },
     compareVersions(updatedData) {
         const storedData = ['grades'];
-        let promise = new Promise(((resolve, reject) => {
+        return new Promise(((resolve, reject) => {
             chrome.storage.local.get(storedData, storage => {
                 let err = chrome.runtime.lastError;
                 if (err) {
@@ -157,8 +154,6 @@ const backgroundService = {
                     isAnyChange
                 };
             });
-
-        return promise;
     },
     authorize(authData) {
         const {
@@ -192,35 +187,29 @@ const backgroundService = {
             });
     },
     isAuthorized() {
-        let promise = new Promise(((resolve, reject) => {
-            const data = ['isAuthorized', 'lastUpdateTime']
+        return new Promise(((resolve, reject) => {
+            const data = ['isAuthorized', 'lastUpdateTime'];
             chrome.storage.local.get(data, (storage) => {
                 let err = chrome.runtime.lastError;
-                const {isAuthorized, lastUpdateTime} = storage;
+                const {isAuthorized } = storage;
                 if (err) {
                     reject(err);
                 } else if (isAuthorized === undefined) {
                     reject('empty');
                 } else {
-                    console.log(`[LibPlus]  is authorized in storage ? ${isAuthorized}, last update: ${lastUpdateTime}`);
                     resolve(storage.isAuthorized);
                 }
             })
         })).catch(reason => {
             if (reason === 'empty') {
-                console.log(`[LibPlus]  storage var isAuthorized is undefined`);
                 return authorizationService.isAuthorized();
             }
         }).then(function (authorized) {
-            console.log(`[LibPlus]  is authorized in authorization service ? ${authorized}`)
             chrome.storage.local.set({'isAuthorized': authorized});
             return authorized;
         });
-
-        return promise;
     },
     onUnauthorized() {
-        console.log('unauthorized called');
         chrome.storage.local.set({
             isAuthorized: false
         });
