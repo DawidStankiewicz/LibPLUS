@@ -33,7 +33,7 @@ const dataScraper = {
             raw.id = gradeId(id);
             grades.push({
                 id,
-                html: raw.innerHTML
+                html: raw.innerHTML.replace(/\r?\n|\r/g, '')
             });
         });
         return grades;
