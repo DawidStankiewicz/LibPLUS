@@ -29,7 +29,7 @@ Gotowe.
 
 
 ## Demo - konto testowe
-Po instalacji rozszerzenie można przetestować logując się na konto testowe [portal.librus.pl](https://portal.librus.pl/rodzina/synergia/loguj)
+Po instalacji rozszerzenie można przetestować, logując się na konto testowe [portal.librus.pl](https://portal.librus.pl/rodzina/synergia/loguj)
 
 - login: `demorodzic` lub `13335` 
 - hasło: `librus11`
@@ -44,13 +44,40 @@ Sugestie, błędy, oferty współpracy czy pytania:
  - [zakładkę 'Issues' na Githubie](https://github.com/DawidStankiewicz/LibPlus/issues)
  - [sklep Google Store](https://chrome.google.com/webstore/detail/libplus-podgl%C4%85d-%C5%9Bredniej/logdgpobdggdjliepjjfmnggmbpohmka/support?hl=pl&gl=PL)
  - [Messengera](https://m.me/StankiewiczDawid)
+ 
+## Ryzyko związane z funkcją autologowania
+
+Korzystanie z funkcji automatycznego logowania w obecnej postaci nie jest zalecane!
+ 
+Rozszerzenia przeglądarkowe takie jak LibPlus nie posiadają 
+wsparcia systemu bezpiecznego przechowywania danych autoryzacyjnych.
+**Opcja autologowania przechowuje w przeglądarce dane logowania 
+do Librusa w postaci niezabezpieczonej** (base64), które mogą zostać skradzione i wykorzystane przez 
+niepowołane osoby.
+
+Nie należy korzystać z opcji autologowania na komputerach w miejscach 
+publicznych (takich jak szkoła czy biblioteka), a także, 
+gdy do komputera mają dostęp inne osoby.
+
+Aby ograniczyć ryzyko związane z opcją autologwania, zaleca się:
+- instalowanie oprogramowania tylko z wiarygodnych źródeł
+- reguralne aktualizowanie oprogramowania
+- pełne szyfrowanie dysku twardego
+- blokowanie ekranu na czas oddalenia się od komputera
+- obserwowanie, z jakich adresów IP następują logowania do dziennika
+- częste zmiany hasła
+- stosowanie niepowtarzalnych haseł!
+
+**Korzystając z opcji autologowania, 
+akceptujesz ryzyko związane z możliwą kradzieżą Twojego loginu i hasła!**
+
 
 ## Eksport ocen do Excela
-W wersji 3.0 funkcja eksportu ocen została usunięta.
+Od wersji 3.0 funkcja eksportu ocen do Excela nie jest dostępna.
 
-## Zmiany:
+## Zmiany
 
-### v3.0.0 (31.05.2019)
+### v3.0.0 (01.06.2019)
 - przepisanie kodu z użyciem Node.js oraz Webpacka
 - nowy prosty interfejs na stronie oraz w menu popup
 - odświeżenie menu popup
