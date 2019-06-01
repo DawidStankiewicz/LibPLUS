@@ -14,7 +14,7 @@ async function createZip() {
     const manifest = JSON.parse(fs.readFileSync(manifestPath));
     const {version} = manifest;
     const filename = `${version}-libplus.zip`;
-    src((BUILD_PATH + '/*'))
+    src((BUILD_PATH + '/**'))
         .pipe(zip(filename))
         .pipe(dest(DIST_PATH));
     console.log(`generated dist ${filename}`);

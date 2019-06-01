@@ -1,6 +1,6 @@
 {
   "name": "libplus",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Browser extension for Librus.pl",
   "private": true,
   "scripts": {

@@ -4,7 +4,6 @@
   "name": "LibPlus - rozszerzenie do Librusa",
   "description": "Szybki podgląd średniej oraz inne funkcje w dzienniku Librus",
   "author": "Dawid Stankiewicz",
-  "version": "3.0.0",
   "short_name": "LibPLUS",
   "icons": {
     "128": "icon/icon_128.png",
