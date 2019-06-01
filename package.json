@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --config webpack.prod.js",
     "dist": "npm run build && gulp generateDist",
-    "dev-server": "webpack-dev-server --config './webpack.dev.js'",
+    "dev-server": "webpack-dev-server --config ./webpack.dev.js",
     "start:webserver": "node webserver.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

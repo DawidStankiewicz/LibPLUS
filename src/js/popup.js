@@ -44,6 +44,9 @@ const popup = {
         $(`#${buttons.logout}`).click(function () {
             popup.logout();
         });
+        $(`#Popup-hello-help`).click(function () {
+            $(`.Popup__login-info`).slideToggle();
+        })
     },
     checkIfAuthorized() {
         return new Promise((resolve, reject) => {

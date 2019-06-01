@@ -5,7 +5,7 @@
   padding-bottom: 2em;
   background-color: $bg;
   color: $fg;
-  font-family: 'Arial', sans-serif;
+  font-family: $font-family;
   font-size: $font-size;
   position: relative;
 
@@ -59,15 +59,15 @@
   font-size: 1em;
   max-width: 100%;
   padding-top: 1em;
-  height: 3em;
+  height: 2em;
 }
 
 .Libplus__box-content {
   transition: transform .5s ease-in-out;
-  padding: .5em 0;
+  padding: .4em 0;
   text-align: center;
   font-weight: bolder;
-  font-size: 4em;
+  font-size: 5em;
 }
 
 .Libplus__button-container {
@@ -147,7 +147,7 @@
 }
 
 .Libplus__logo {
-  font-size: 2.5em;
+  font-size: 3em;
   position: absolute;
   top: -1.5em;
   left: .5em;
@@ -157,9 +157,9 @@
 }
 
 .Libplus__copyright {
-  font-size: 0.38em;
+  font-size: 0.34em;
   font-weight: normal;
   color: $logo-copy;
   display: block;
-  line-height: 0px;
+  line-height: 0;
 }

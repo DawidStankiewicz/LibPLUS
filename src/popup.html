@@ -74,6 +74,10 @@
                         id="Popup-hello-contact"
                         rel="noopener"
                 >kontakt</a></div>
+                <div class="Popup__hello-menu-item"><div
+                        class="Popup__ga-item"
+                        id="Popup-hello-help"
+                >pomoc</div></div>
             </nav>
         </div>
         <form id="loginForm" class="Popup__login-form" action="#" autocomplete="on">
@@ -143,21 +147,29 @@
                     </button>
                     <div class="float-clearfix"></div>
                 </div>
-                <div
-                        class="Popup__login-info"
-                        style="display: none"
-                >
-                    <p>Zaloguj się, używając loginu i hasła do
-                        <a href="https://portal.librus.pl/rodzina/synergia/loguj">Librusa</a>
-                        aby skorzystać ze wszystkich funkcji, jakie daje rozszerzenie LibPlus.
-                    </p>
-                    <p>Zaznaczenie opcji automatycznego logowania zapisze login i hasło
-                        w pamięci przeglądarki na tym urządzeniu.
-                        Rozszerzenie będzie się automatycznie łączyło z dziennikiem,
-                        aby pobrać i wyświetlić aktualne dane.</p>
-                </div>
             </div>
         </form>
+    </div>
+    <div
+            class="Popup__login-info"
+            style="display: none"
+    >
+        <p>Zaloguj się, używając loginu i hasła do
+            <a href="https://portal.librus.pl/rodzina/synergia/loguj">Librusa</a>,
+            aby skorzystać ze wszystkich funkcji, jakie daje rozszerzenie LibPlus.
+        </p>
+        <p>Zaznaczenie opcji automatycznego logowania zapisze login i hasło
+            w pamięci przeglądarki na tym urządzeniu.
+            Rozszerzenie będzie się automatycznie łączyło z dziennikiem,
+            aby pobrać i wyświetlić aktualne dane.</p>
+
+        <p><b>Korzystanie z opcji automatycznego logowania jest obecnie ryzykowne i nie jest zalecane!</b> <a
+                href="https://github.com/DawidStankiewicz/LibPLUS#libplus"
+                target="_blank"
+                class="Popup__ga-item"
+                id="Popup-hello-help-risk"
+                rel="noopener"
+        >Zobacz więcej</a>.</p>
     </div>
     <div class="Popup__user" style="display: none;">
         <div id="Libplus"></div>
