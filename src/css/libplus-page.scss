@@ -1,0 +1,19 @@
+@import "vars";
+
+.Libplus__page-wrapper {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  float: left;
+  width: 100%;
+
+  #Libplus {
+    box-shadow: $libplus-page-box-shadow;
+  }
+
+  .Libplus__logo {
+    color: $logo;
+    top: .3em;
+    right: .4em;
+    left: auto;
+  }
+}

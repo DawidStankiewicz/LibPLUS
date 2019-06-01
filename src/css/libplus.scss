@@ -1,0 +1,165 @@
+@import "vars";
+
+#Libplus {
+  width: 100%;
+  padding-bottom: 2em;
+  background-color: $bg;
+  color: $fg;
+  font-family: $font-family;
+  font-size: $font-size;
+  position: relative;
+
+  a {
+    text-decoration: none;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+.Libplus__box-container {
+  display: flex;
+  justify-content: center;
+  align-content: space-between;
+  padding-top: 2em;
+}
+
+.Libplus__box-wrapper {
+  flex: 0 0 0;
+  margin: 2em;
+}
+
+.Libplus__box {
+  width: 14em;
+  height: 13em;
+  max-width: 100%;
+  padding: 0 2em 2em 2em;
+  border-radius: $border-radius;
+  color: $fg-b;
+  box-shadow: $libplus-box-shadow;
+  transition: all .4s;
+
+  &:hover .Libplus__box-content {
+    transform: scale(1.08);
+  }
+}
+
+.Libplus__box--left {
+  background: linear-gradient(to bottom right, $accent-a, $accent-b);
+}
+
+.Libplus__box--right {
+  background: linear-gradient(to top right, $accent-b, $accent-a);
+}
+
+.Libplus__box-title {
+  margin: auto;
+  text-align: center;
+  font-size: 1em;
+  max-width: 100%;
+  padding-top: 1em;
+  height: 2em;
+}
+
+.Libplus__box-content {
+  transition: transform .5s ease-in-out;
+  padding: .4em 0;
+  text-align: center;
+  font-weight: bolder;
+  font-size: 5em;
+}
+
+.Libplus__button-container {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  display: flex;
+  justify-content: center;
+}
+
+.Libplus__button-wrapper {
+  padding: 0 1em;
+  justify-content: space-between;
+}
+
+.Libplus__button {
+  width: 120px;
+  padding: 1em;
+  background-color: $button-bg;
+  color: $button-fg;
+  box-shadow: $button-shadow;
+  border-radius: $border-radius;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.9em;
+  transition: all 0.4s, color 0.1s, transform 0.3s ease-in-out .3s, background-color 0s;
+
+  &:hover {
+    cursor: pointer;
+    transform: translateY(-5px);
+    transition-delay: 0ms;
+  }
+}
+
+.Libplus__button--active {
+  background: linear-gradient(to top, $accent-a, $accent-b);
+  color: $fg-b;
+  transform: translateY(-5px);
+  transition-delay: 0s;
+
+  &.Libplus__button--all,
+  &.Libplus__button--term-1 {
+    background: linear-gradient(to top right, $accent-a, $accent-b);
+  }
+
+  &.Libplus__button--term-2,
+  &.Libplus__button--period {
+    background: linear-gradient(to top left, $accent-a, $accent-b);
+  }
+}
+
+.Libplus__button--menu {
+  margin-top: 1em;
+  width: 110px;
+  margin-left: auto;
+  margin-right: auto;
+
+  &:first-of-type {
+    margin-top: 2em;
+  }
+}
+
+.Libplus__menu-period {
+  display: flex;
+  justify-content: center;
+  padding-top: 2em;
+  padding-bottom: 1em;
+
+  input {
+    text-align: center;
+  }
+}
+
+.Libplus__datepickers-separator {
+  padding-top: .3em;
+  color: $dark-gray;
+}
+
+.Libplus__logo {
+  font-size: 3em;
+  position: absolute;
+  top: -1.5em;
+  left: .5em;
+  font-weight: bold;
+  color: $white;
+  z-index: 11;
+}
+
+.Libplus__copyright {
+  font-size: 0.34em;
+  font-weight: normal;
+  color: $logo-copy;
+  display: block;
+  line-height: 0;
+}
