@@ -23,6 +23,10 @@ const gradeParser = {
         for (let property in gradeProperties) {
             grade[property] = this.parseValueFromRawHTML(html, gradeProperties[property]);
         }
+        if (grade.rawValue === undefined) {
+            console.log(`[LibPlus] raw value is undefined: id=${id}, html=`);
+            console.log(html);
+        }
         const term = this.parseGradeTerm(id);
         const subject = this.parseGradeSubject(id);
         const type = this.getGradeType(grade.category, grade.rawValue);
@@ -43,7 +47,9 @@ const gradeParser = {
         let val = 0;
         if (type === gradeType.MINUS ||
             type === gradeType.PLUS ||
-            type === gradeType.NP) {
+            type === gradeType.NP ||
+            type === gradeType.OTHER ||
+            rawValue === undefined) {
             return 0;
         }
         const numberWithPlusMatcher = /(\d)(?:\+)/;
@@ -61,12 +67,15 @@ const gradeParser = {
         return val;
     },
     getGradeType: function (category, rawValue) {
-        const {MINUS, PLUS, NP} = gradesRawValue;
+        const {MINUS, PLUS, NP, BZ} = gradesRawValue;
         // check if grade category is one of the end-term grade categories
         for (let cat in termGradesCategories) {
             if (category === termGradesCategories[cat]) {
                 return gradeType[cat];
             }
+        }
+        if (rawValue === undefined) {
+            return gradeType.OTHER;
         }
         if (rawValue.match(MINUS)) {
             return gradeType.MINUS;
@@ -76,6 +85,9 @@ const gradeParser = {
         }
         if (rawValue.match(NP)) {
             return gradeType.NP;
+        }
+        if (rawValue.match(BZ)) {
+            return gradeType.OTHER;
         }
         return gradeType.NORMAL;
     },

@@ -86,6 +86,7 @@ Od wersji 3.0 funkcja eksportu ocen do Excela nie jest dostępna.
 - dodanie funkcji automatycznego logowania (storage bez szyfrowania)
 - dodanie skryptów GA
 - pobieranie danych z serwera co 60 minut
+- dodanie wsparcia dla przeglądarki Mozilla Firefox
 
 ### v2.2.1 (06.06.2017)
 - naprawione liczenie średniej z ocen rocznych

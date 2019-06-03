@@ -13,6 +13,7 @@ module.exports = {
         MINUS: /^-$/,
         PLUS: /^\+$/,
         NP: /^np$/,
+        BZ: /^bz$/,
     },
     termGradesCategories: {
         PROPOSED_FIRST: 'przewidywana śródroczna',
@@ -47,6 +48,7 @@ module.exports = {
         PLUS: 'PLUS',
         MINUS: 'MINUS',
         NP: 'NP',
-        NORMAL: 'NORMAL'
+        NORMAL: 'NORMAL',
+        OTHER: 'OTHER'
     }
 };

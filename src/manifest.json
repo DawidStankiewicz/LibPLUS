@@ -31,9 +31,7 @@
     }
   ],
   "permissions": [
-    "activeTab",
     "https://*.librus.pl/",
-    "storage",
-    "cookies"
+    "storage"
   ]
 }
