@@ -242,7 +242,6 @@ const libplusController = {
     secondTermEndMode: function () {
         libplusController.toggleButton(buttons.secondTermEnd);
         const endGrades = libplusController.grades.filter(grade =>
-            grade.term === 2 &&
             grade.type === gradeType.END_SECOND);
         const gpa = gradeUtilities.calcLinearGPA(endGrades);
         libplusController.updateContent({
