@@ -228,7 +228,8 @@ chrome.runtime.onMessage.addListener((request) => {
     return true;
 });
 
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onStartup.addListener(() => {
+    console.log('[LibPlus] start background script');
     backgroundService.init();
 });
 
